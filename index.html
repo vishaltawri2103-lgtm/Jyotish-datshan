@@ -2177,6 +2177,54 @@
                 });
             });
         })();
+    (() => {
+    const tithisEn = [
+        "Shukla Pratipada", "Shukla Dwitiya", "Shukla Tritiya", "Shukla Chaturthi", "Shukla Panchami",
+        "Shukla Shashthi", "Shukla Saptami", "Shukla Ashtami", "Shukla Navami", "Shukla Dashami",
+        "Shukla Ekadashi", "Shukla Dwadashi", "Shukla Trayodashi", "Shukla Chaturdashi", "Purnima",
+        "Krishna Pratipada", "Krishna Dwitiya", "Krishna Tritiya", "Krishna Chaturthi", "Krishna Panchami",
+        "Krishna Shashthi", "Krishna Saptami", "Krishna Ashtami", "Krishna Navami", "Krishna Dashami",
+        "Krishna Ekadashi", "Krishna Dwadashi", "Krishna Trayodashi", "Krishna Chaturdashi", "Amavasya"
+    ];
+
+    const tithisHi = [
+        "शुक्ल प्रतिपदा", "शुक्ल द्वितीया", "शुक्ल तृतीया", "शुक्ल चतुर्थी", "शुक्ल पंचमी",
+        "शुक्ल षष्ठी", "शुक्ल सप्तमी", "शुक्ल अष्टमी", "शुक्ल नवमी", "शुक्ल दशमी",
+        "शुक्ल एकादशी", "शुक्ल द्वादशी", "शुक्ल त्रयोदशी", "शुक्ल चतुर्दशी", "पूर्णिमा",
+        "कृष्ण प्रतिपदा", "कृष्ण द्वितीया", "कृष्ण तृतीया", "कृष्ण चतुर्थी", "कृष्ण पंचमी",
+        "कृष्ण षष्ठी", "कृष्ण सप्तमी", "कृष्ण अष्टमी", "कृष्ण नवमी", "कृष्ण दशमी",
+        "कृष्ण एकादशी", "कृष्ण द्वादशी", "कृष्ण त्रयोदशी", "कृष्ण चतुर्दशी", "अमावस्या"
+    ];
+
+    const normalizeDeg = (deg) => ((deg % 360) + 360) % 360;
+
+    function computeAccuratePanchangLabel() {
+        const now = new Date();
+        const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+        const istDate = new Date(utcMs + 5.5 * 3600000);
+        const daysSinceJ2000 = (istDate.getTime() - Date.UTC(2000, 0, 1, 12, 0, 0)) / 86400000;
+
+        const sunMeanLong = normalizeDeg(280.460 + 0.9856474 * daysSinceJ2000);
+        const moonMeanLong = normalizeDeg(218.316 + 13.176396 * daysSinceJ2000);
+        const elongation = normalizeDeg(moonMeanLong - sunMeanLong);
+        const tithiIndex = Math.floor(elongation / 12) % 30;
+
+        const currentLang = (typeof STATE !== "undefined" && STATE && STATE.lang === "hi") ? "hi" : "en";
+        return currentLang === "hi" ? tithisHi[tithiIndex] : tithisEn[tithiIndex];
+    }
+
+    try {
+        window.getDailyPanchangLabel = computeAccuratePanchangLabel;
+        if (typeof getDailyPanchangLabel === "function") {
+            getDailyPanchangLabel = computeAccuratePanchangLabel;
+        }
+    } catch (e) {}
+
+    const panchangEl = document.getElementById("dash-panchang-val");
+    if (panchangEl) {
+        panchangEl.textContent = computeAccuratePanchangLabel();
+    }
+})();
     </script>
 </body>
 </html>
