@@ -1,2137 +1,573 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jyotish Darshan — Daily Rashifal & Kundli Milan</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jyotish Darshan — Daily Rashifal & Kundli Milan</title>
 
-    <!-- PWA & Mobile Web App Meta Tags -->
-    <meta name="theme-color" content="#0b0d1e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Jyotish Darshan">
-    <meta name="description" content="Vedic Daily Rashifal & 36-Point Ashtakoot Kundli Milan in English and Hindi.">
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Jyotish Darshan" />
+  <meta name="description" content="Vedic Daily Rashifal and 36-point Guna Kundli Milan app in English & Hindi." />
 
-    <!-- Google Analytics (GA4) — Replace G-XXXXXXXXXX with your own Measurement ID -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        const GA_MEASUREMENT_ID = 'G-Q7L50HM8VP';
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { window.dataLayer.push(arguments); }
-        gtag('js', new Date());
-        if (GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
-            gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
-        }
-    </script>
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7L50HM8VP"></script>
+  <script>
+    const GA_MEASUREMENT_ID = 'G-Q7L50HM8VP';
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID);
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        display: ['Cinzel', 'Georgia', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', '"Noto Sans Devanagari"', 'sans-serif'],
-                        hindi: ['"Noto Sans Devanagari"', '"Plus Jakarta Sans"', 'sans-serif']
-                    },
-                    colors: {
-                        dusk: {
-                            950: '#090d1c',
-                            900: '#0f152b',
-                            850: '#141c38',
-                            800: '#1b2547'
-                        },
-                        lotus: {
-                            300: '#f9a8d4',
-                            400: '#f472b6',
-                            500: '#ec4899'
-                        },
-                        saffron: {
-                            300: '#fcd34d',
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706'
-                        }
-                    }
-                }
-            }
+    function trackEvent(eventName, params = {}) {
+      try {
+        if (typeof gtag === 'function') {
+          gtag('event', eventName, params);
         }
-    </script>
-    <style>
-        :root {
-            color-scheme: dark;
-        }
-        body {
-            background: radial-gradient(circle at 15% 10%, rgba(245, 158, 11, 0.14) 0%, transparent 42%),
-                        radial-gradient(circle at 85% 20%, rgba(236, 72, 153, 0.14) 0%, transparent 45%),
-                        radial-gradient(circle at 50% 90%, rgba(52, 211, 153, 0.10) 0%, transparent 50%),
-                        linear-gradient(160deg, #090d1c 0%, #111833 48%, #0c1226 100%);
-            min-height: 100vh;
-            color: #f8fafc;
-            font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
-            overflow-x: hidden;
-        }
+      } catch (e) {
+        // Ignore analytics errors
+      }
+    }
+  </script>
 
-        /* Subtle Twinkling Starfield */
-        #star-canvas {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card: #131c31;
+      --card-2: #1a2642;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
+      --accent-2: #fbbf24;
+      --border: rgba(255, 255, 255, 0.1);
+      --success: #22c55e;
+    }
 
-        /* Soothing Glass Cards */
-        .celestial-card {
-            background: linear-gradient(145deg, rgba(22, 30, 58, 0.78) 0%, rgba(13, 19, 39, 0.88) 100%);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(251, 191, 36, 0.22);
-            box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .celestial-card-glow {
-            background: linear-gradient(145deg, rgba(33, 41, 78, 0.84) 0%, rgba(16, 22, 46, 0.92) 100%);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(251, 191, 36, 0.36);
-            box-shadow: 0 18px 45px -12px rgba(245, 158, 11, 0.16), inset 0 1px 0 rgba(253, 224, 71, 0.14);
-        }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 60%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px;
+      line-height: 1.5;
+    }
 
-        /* Slow Mandala Rotation */
-        @keyframes spinMandala {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .mandala-rotate {
-            animation: spinMandala 75s linear infinite;
-        }
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
 
-        @keyframes floatGlow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-        }
-        .float-gentle {
-            animation: floatGlow 5s ease-in-out infinite;
-        }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
 
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-reveal {
-            animation: fadeSlideUp 0.35s ease-out forwards;
-        }
+    .brand h1 {
+      font-size: 1.35rem;
+      color: var(--accent-2);
+    }
 
-        /* Hide scrollbars on horizontal Rashi strip */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .brand p {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
 
-        /* Date & Time Picker Indicator Contrast */
-        input[type="date"]::-webkit-calendar-picker-indicator,
-        input[type="time"]::-webkit-calendar-picker-indicator {
-            filter: invert(0.85) sepia(0.5) saturate(3) hue-rotate(355deg);
-            cursor: pointer;
-        }
-    </style>
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button, select, input {
+      font-family: inherit;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      color: var(--text);
+      background: var(--card-2);
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.12s ease, background 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #d97706);
+      color: #090d16;
+      border: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent-2);
+    }
+
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .mode-tab {
+      padding: 12px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .mode-tab.active {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+    }
+
+    .panel {
+      display: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .rashi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .rashi-btn {
+      padding: 9px 8px;
+      font-size: 0.85rem;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+    }
+
+    .rashi-btn.selected {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field input, .field select {
+      width: 100%;
+    }
+
+    .result-box {
+      margin-top: 16px;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .date-badge {
+      display: inline-block;
+      font-size: 0.82rem;
+      color: var(--accent-2);
+      background: rgba(245, 158, 11, 0.14);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .score-big {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--success);
+      margin: 6px 0;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .status-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+  </style>
 </head>
-<body class="antialiased selection:bg-amber-400 selection:text-dusk-950 pb-16 relative">
-
-    <!-- Ambient Twinkling Starfield -->
-    <canvas id="star-canvas"></canvas>
-
-    <!-- Top Sticky Header -->
-    <header class="sticky top-0 z-40 border-b border-amber-400/20 bg-dusk-950/85 backdrop-blur-xl">
-        <div class="max-w-4xl mx-auto px-4 pt-3 pb-2.5 flex items-center justify-between gap-2">
-            <!-- Brand Emblem -->
-            <button type="button" id="brand-home-btn" class="flex items-center gap-3 text-left group focus:outline-none">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-300 via-amber-500 to-rose-400 p-[1.5px] shadow-lg shadow-amber-500/20 shrink-0">
-                    <div class="w-full h-full rounded-[14px] bg-dusk-950 flex items-center justify-center text-amber-300 text-xl font-bold group-hover:scale-105 transition-transform">
-                        ॐ
-                    </div>
-                </div>
-                <div>
-                    <h1 class="font-display text-lg sm:text-xl font-bold tracking-wide bg-gradient-to-r from-amber-200 via-amber-300 to-rose-200 bg-clip-text text-transparent leading-tight">
-                        Jyotish Darshan
-            <!-- Language Toggle & Install App Button -->
-            <div class="flex items-center gap-2">
-                <button type="button" id="btn-install-pwa"
-                    class="px-3 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 hover:bg-amber-400/25 text-amber-200 border border-amber-300/35 transition-all flex items-center gap-1.5 shadow-sm">
-                    <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
-                    </svg>
-                    <span data-i18n="installApp">Install App</span>
-                </button>
-                <div class="inline-flex rounded-full bg-dusk-900/95 p-1 border border-amber-400/30 shadow-inner" role="group" aria-label="Language Selector">
-                    <button type="button" id="lang-en-btn" class="px-3 py-1 text-xs font-bold rounded-full transition-all bg-gradient-to-r from-amber-300 to-amber-500 text-dusk-950 shadow">
-                        EN
-                    </button>
-                    <button type="button" id="lang-hi-btn" class="px-3 py-1 text-xs font-bold rounded-full transition-all text-slate-300 hover:text-white font-hindi">
-                        हिन्दी
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mode Switcher Tabs: Daily Rashifal | Kundli Milan -->
-        <div class="max-w-4xl mx-auto px-4 pb-3">
-            <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-dusk-900/90 border border-amber-400/20">
-                <button type="button" id="nav-tab-rashifal"
-                    class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-amber-300 via-amber-400 to-saffron-500 text-dusk-950 shadow-md shadow-amber-500/20">
-                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <circle cx="12" cy="12" r="4"/>
-                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
-                    </svg>
-                    <span data-i18n="tabRashifal">Daily Rashifal</span>
-                </button>
-                <button type="button" id="nav-tab-milan"
-                    class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all text-slate-300 hover:text-amber-200 hover:bg-dusk-800/60">
-                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-                    </svg>
-                    <span data-i18n="tabMilan">Kundli Milan</span>
-                </button>
-            </div>
-        </div>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1 id="appTitle">Jyotish Darshan</h1>
+        <p id="appSubtitle">Daily Rashifal &amp; 36-Guna Kundli Milan</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="langToggleBtn" class="btn-outline">हिन्दी</button>
+        <button type="button" id="installAppBtn" class="btn-outline" style="display: none;">Install App</button>
+      </div>
     </header>
 
-    <!-- Main Content Wrapper -->
-    <main class="relative z-10 max-w-4xl mx-auto px-4 pt-6 sm:pt-8">
-
-        <!-- Notification / Inline Status Banner -->
-        <div id="status-banner" class="hidden mb-5 p-3.5 rounded-2xl bg-amber-400/15 border border-amber-300/40 text-amber-100 text-sm flex items-center justify-between gap-3 animate-reveal">
-            <div class="flex items-center gap-2.5">
-                <span class="text-amber-300 text-base">✨</span>
-                <span id="status-banner-text"></span>
-            </div>
-            <button type="button" id="status-banner-close" class="text-amber-200 hover:text-white px-2 py-0.5 rounded-lg hover:bg-white/10 text-xs font-bold">
-                ✕
-            </button>
-        </div>
-
-        <!-- ===================================================================== -->
-        <!-- SECTION 1: DAILY RASHIFAL VIEW                                        -->
-        <!-- ===================================================================== -->
-        <div id="view-rashifal" class="space-y-6">
-
-            <!-- STEP 1A: BIRTH DETAILS FORM -->
-            <section id="rashifal-input-card" class="animate-reveal space-y-6">
-                <!-- Spiritual Hero Banner -->
-                <div class="relative overflow-hidden celestial-card-glow rounded-3xl p-6 sm:p-8 text-center">
-                    <!-- Decorative Sacred Geometry Mandala -->
-                    <svg class="mandala-rotate absolute -top-24 -right-24 w-64 h-64 text-amber-300/10 pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-                        <circle cx="100" cy="100" r="92" stroke-width="1" stroke-dasharray="4 4"/>
-                        <circle cx="100" cy="100" r="72" stroke-width="1"/>
-                        <circle cx="100" cy="100" r="48" stroke-width="1.4"/>
-                        <polygon points="100,12 176,144 24,144" stroke-width="1"/>
-                        <polygon points="100,188 176,56 24,56" stroke-width="1"/>
-                    </svg>
-                    <svg class="mandala-rotate absolute -bottom-28 -left-24 w-64 h-64 text-rose-400/10 pointer-events-none" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-                        <circle cx="100" cy="100" r="88" stroke-width="1"/>
-                        <circle cx="100" cy="100" r="56" stroke-width="1" stroke-dasharray="3 3"/>
-                    </svg>
-
-                    <div class="relative z-10">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/15 border border-amber-300/30 text-amber-200 text-xs font-semibold mb-3">
-                            <span>☽</span>
-                            <span id="hero-today-date">Monday, November 23, 2026</span>
-                        </div>
-                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mb-2.5" data-i18n="heroTitle">
-                            Discover Your Vedic Chandra Rashi
-                        </h2>
-                        <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto leading-relaxed" data-i18n="heroSubtitle">
-                            Enter your birth details to compute your sidereal Moon Sign (Lahiri Ayanamsa), Nakshatra, and soothing daily guidance.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Birth Details Input Form -->
-                <form id="rashifal-birth-form" novalidate class="celestial-card rounded-3xl p-6 sm:p-8 space-y-5">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <!-- Name -->
-                        <div class="sm:col-span-2">
-                            <label for="rf-name" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2" data-i18n="labelName">
-                                Full Name (Optional)
-                            </label>
-                            <input type="text" id="rf-name" placeholder="e.g., Aarav Sharma"
-                                class="w-full px-4 py-3 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all">
-                        </div>
-
-                        <!-- Date of Birth -->
-                        <div>
-                            <label for="rf-dob" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2" data-i18n="labelDob">
-                                Date of Birth *
-                            </label>
-                            <input type="date" id="rf-dob" value="1996-08-15" required
-                                class="w-full px-4 py-3 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all">
-                        </div>
-
-                        <!-- Time of Birth -->
-                        <div>
-                            <label for="rf-tob" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2" data-i18n="labelTob">
-                                Time of Birth *
-                            </label>
-                            <input type="time" id="rf-tob" value="09:30" required
-                                class="w-full px-4 py-3 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all">
-                        </div>
-
-                        <!-- Place of Birth (Searchable Dropdown + Quick Chips + Manual Fallback) -->
-                        <div class="sm:col-span-2 space-y-2.5">
-                            <div class="flex items-center justify-between gap-2">
-                                <label for="rf-city-search" class="block text-xs font-bold uppercase tracking-wider text-amber-300" data-i18n="labelPob">
-                                    Place of Birth *
-                                </label>
-                                <span id="rf-tz-pill" class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[11px] font-semibold">
-                                    IST (UTC+5:30)
-                                </span>
-                            </div>
-
-                            <div class="relative">
-                                <input type="text" id="rf-city-search" value="New Delhi, Delhi" autocomplete="off"
-                                    placeholder="Type any city (e.g., Raipur, Mumbai, Varanasi, Jaipur)..."
-                                    class="w-full px-4 py-3 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all">
-                                <ul id="rf-city-list" class="hidden absolute z-30 w-full mt-1.5 max-h-56 overflow-y-auto rounded-2xl bg-dusk-950 border border-amber-400/40 shadow-2xl divide-y divide-slate-800/80"></ul>
-                            </div>
-
-                            <!-- Popular Cities Quick-Tap Chips -->
-                            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
-                                <span class="text-[11px] text-slate-400 mr-1" data-i18n="quickCities">Popular:</span>
-                                <button type="button" class="rf-quick-city px-2.5 py-1 rounded-full text-[11px] bg-dusk-800/90 hover:bg-amber-400/20 text-amber-200 border border-amber-400/20 transition-colors" data-city="New Delhi, Delhi">Delhi</button>
-                                <button type="button" class="rf-quick-city px-2.5 py-1 rounded-full text-[11px] bg-dusk-800/90 hover:bg-amber-400/20 text-amber-200 border border-amber-400/20 transition-colors" data-city="Mumbai, Maharashtra">Mumbai</button>
-                                <button type="button" class="rf-quick-city px-2.5 py-1 rounded-full text-[11px] bg-dusk-800/90 hover:bg-amber-400/20 text-amber-200 border border-amber-400/20 transition-colors" data-city="Raipur, Chhattisgarh">Raipur</button>
-                                <button type="button" class="rf-quick-city px-2.5 py-1 rounded-full text-[11px] bg-dusk-800/90 hover:bg-amber-400/20 text-amber-200 border border-amber-400/20 transition-colors" data-city="Varanasi, Uttar Pradesh">Varanasi</button>
-                                <button type="button" class="rf-quick-city px-2.5 py-1 rounded-full text-[11px] bg-dusk-800/90 hover:bg-amber-400/20 text-amber-200 border border-amber-400/20 transition-colors" data-city="Jaipur, Rajasthan">Jaipur</button>
-                                <button type="button" class="rf-quick-city px-2.5 py-1 rounded-full text-[11px] bg-dusk-800/90 hover:bg-amber-400/20 text-amber-200 border border-amber-400/20 transition-colors" data-city="Bengaluru, Karnataka">Bengaluru</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Inline Form Validation Warning -->
-                    <p id="rf-form-error" class="hidden text-xs text-rose-300 bg-rose-500/15 border border-rose-400/30 rounded-xl px-3.5 py-2.5"></p>
-
-                    <!-- Save Profile & Submit -->
-                    <div class="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-amber-400/15">
-                        <label class="inline-flex items-center gap-2.5 cursor-pointer text-sm text-slate-300 select-none">
-                            <input type="checkbox" id="rf-save-profile" checked class="w-4 h-4 rounded accent-amber-400 bg-dusk-950 border-slate-600">
-                            <span data-i18n="saveProfile">Save birth details on this device</span>
-                        </label>
-
-                        <button type="submit" id="rf-submit-btn"
-                            class="w-full sm:w-auto px-7 py-3.5 rounded-2xl font-bold text-dusk-950 bg-gradient-to-r from-amber-300 via-amber-400 to-rose-300 hover:brightness-105 shadow-lg shadow-amber-500/25 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
-                            <span>✨</span>
-                            <span data-i18n="getRashifalBtn">Get Daily Rashifal</span>
-                        </button>
-                    </div>
-                </form>
-
-                <!-- Direct 12-Rashi Explorer Grid -->
-                <div class="space-y-3">
-                    <p class="text-xs font-bold uppercase tracking-wider text-amber-200/75 text-center" data-i18n="browseDirect">
-                        Or Tap Any Chandra Rashi to Read Today's Rashifal
-                    </p>
-                    <div id="direct-rashi-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5"></div>
-                </div>
-            </section>
-
-            <!-- STEP 1B: DAILY RASHIFAL DASHBOARD -->
-            <section id="rashifal-dashboard-card" class="hidden animate-reveal space-y-6">
-
-                <!-- Top Rashi Quick Switcher Bar -->
-                <div class="celestial-card rounded-2xl p-3">
-                    <div class="flex items-center justify-between px-1.5 pb-2">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber-300/85" data-i18n="switchRashi">
-                            Switch Chandra Rashi
-                        </span>
-                        <div class="flex items-center gap-3">
-                            <button type="button" id="btn-back-birth-rashi" class="hidden text-xs text-rose-300 hover:text-rose-200 underline font-medium">
-                                ↺ <span data-i18n="myBirthRashi">My Birth Rashi</span>
-                            </button>
-                            <button type="button" id="btn-edit-birth-details" class="text-xs text-amber-300 hover:text-amber-200 font-semibold flex items-center gap-1">
-                                ✎ <span data-i18n="editDetails">Edit Birth Details</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="dash-rashi-strip" class="flex gap-2 overflow-x-auto no-scrollbar py-1 px-0.5"></div>
-                </div>
-
-                <!-- Main Rashi Mandala Hero Card -->
-                <div class="relative overflow-hidden celestial-card-glow rounded-3xl p-6 sm:p-8">
-                    <!-- Giant Watermark Rashi Glyph -->
-                    <div id="dash-bg-glyph" class="float-gentle absolute -right-4 -bottom-8 text-[155px] leading-none text-amber-300/10 font-serif select-none pointer-events-none">
-                        ♈
-                    </div>
-
-                    <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                        <div class="flex items-start sm:items-center gap-4 sm:gap-5">
-                            <!-- Animated Mandala Emblem -->
-                            <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-amber-300/25 via-rose-400/15 to-dusk-900 border border-amber-300/45 flex flex-col items-center justify-center shrink-0 shadow-inner">
-                                <span id="dash-rashi-glyph" class="text-4xl sm:text-5xl text-amber-300">♈</span>
-                                <span id="dash-rashi-num" class="text-[10px] font-bold text-amber-200/80 uppercase tracking-widest mt-1">RASHI 1</span>
-                            </div>
-
-                            <div>
-                                <div class="flex flex-wrap items-center gap-2 mb-1.5">
-                                    <span id="dash-today-pill" class="px-3 py-0.5 rounded-full text-xs font-semibold bg-amber-400/20 text-amber-200 border border-amber-300/35">
-                                        Monday, November 23, 2026
-                                    </span>
-                                    <span id="dash-greeting-pill" class="text-xs font-semibold text-rose-200"></span>
-                                </div>
-
-                                <h2 class="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight flex flex-wrap items-baseline gap-2.5">
-                                    <span id="dash-rashi-title">Mesha (Aries)</span>
-                                    <span id="dash-rashi-sub" class="text-lg font-hindi font-semibold text-amber-300">मेष राशि</span>
-                                </h2>
-
-                                <!-- Ruling Planet, Element, Panchang Vibe -->
-                                <div class="flex flex-wrap items-center gap-2 mt-3 text-xs">
-                                    <span class="px-3 py-1 rounded-xl bg-dusk-950/85 border border-amber-400/20 text-slate-200">
-                                        <span class="text-slate-400" data-i18n="lord">Lord:</span> <strong id="dash-lord-val" class="text-amber-200">Mars (Mangal)</strong>
-                                    </span>
-                                    <span class="px-3 py-1 rounded-xl bg-dusk-950/85 border border-amber-400/20 text-slate-200">
-                                        <span class="text-slate-400" data-i18n="element">Element:</span> <strong id="dash-element-val" class="text-rose-200">Fire (Agni)</strong>
-                                    </span>
-                                    <span class="px-3 py-1 rounded-xl bg-dusk-950/85 border border-emerald-400/25 text-emerald-200">
-                                        <span data-i18n="panchang">Panchang:</span> <strong id="dash-panchang-val">Shukla Trayodashi</strong>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sidereal Janma Kundli Summary Card -->
-                        <div id="dash-kundli-box" class="bg-dusk-950/85 border border-amber-300/30 rounded-2xl p-4 text-xs space-y-2 shrink-0 min-w-[235px]">
-                            <div class="text-[11px] font-bold uppercase tracking-wider text-amber-300 flex items-center justify-between pb-1 border-b border-amber-400/15">
-                                <span data-i18n="kundliSummary">Janma Kundli Summary</span>
-                                <span>🪷</span>
-                            </div>
-                            <div class="flex justify-between gap-4">
-                                <span class="text-slate-400" data-i18n="chandraRashi">Chandra Rashi:</span>
-                                <span id="kundli-moon-val" class="font-bold text-white">Mesha</span>
-                            </div>
-                            <div class="flex justify-between gap-4">
-                                <span class="text-slate-400" data-i18n="nakshatra">Nakshatra &amp; Pada:</span>
-                                <span id="kundli-nakshatra-val" class="font-bold text-amber-200">Ashwini (Pada 2)</span>
-                            </div>
-                            <div class="flex justify-between gap-4">
-                                <span class="text-slate-400" data-i18n="suryaRashi">Surya Rashi:</span>
-                                <span id="kundli-sun-val" class="font-bold text-rose-200">Simha</span>
-                            </div>
-                            <div id="kundli-place-meta" class="pt-1 border-t border-slate-800 text-[11px] text-slate-400 truncate max-w-[240px]">
-                                New Delhi • Lahiri Ayanamsa
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4 Lucky Cosmic Insights Row -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    <div class="celestial-card rounded-2xl p-4 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-medium text-slate-400" data-i18n="luckyColor">Lucky Color</span>
-                            <span id="dash-color-dot" class="w-4 h-4 rounded-full border border-white/50 shadow" style="background:#f59e0b;"></span>
-                        </div>
-                        <p id="dash-color-val" class="text-base sm:text-lg font-bold text-white">Saffron Gold</p>
-                    </div>
-
-                    <div class="celestial-card rounded-2xl p-4 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-medium text-slate-400" data-i18n="luckyNumber">Lucky Number</span>
-                            <span class="text-amber-300 text-sm">✦</span>
-                        </div>
-                        <p id="dash-number-val" class="text-base sm:text-lg font-bold text-amber-300">9, 18</p>
-                    </div>
-
-                    <div class="celestial-card rounded-2xl p-4 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-medium text-slate-400" data-i18n="shubhMuhurat">Shubh Muhurat</span>
-                            <span class="text-emerald-300 text-sm">🕒</span>
-                        </div>
-                        <p id="dash-muhurat-val" class="text-sm sm:text-base font-bold text-emerald-300">10:30 AM – 12:00 PM</p>
-                    </div>
-
-                    <div class="celestial-card rounded-2xl p-4 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-medium text-slate-400" data-i18n="cosmicHarmony">Cosmic Harmony</span>
-                            <span class="text-rose-300 text-sm">🪷</span>
-                        </div>
-                        <div class="flex items-center gap-2.5">
-                            <p id="dash-harmony-val" class="text-base sm:text-lg font-bold text-white">88%</p>
-                            <div class="flex-1 h-2 rounded-full bg-dusk-950 overflow-hidden">
-                                <div id="dash-harmony-bar" class="h-full bg-gradient-to-r from-amber-300 via-rose-400 to-emerald-400 rounded-full" style="width: 88%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Detailed Daily Horoscope Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                    <!-- Overall Energy -->
-                    <article class="celestial-card rounded-3xl p-5 sm:p-6 md:col-span-2 border-l-4 border-l-amber-400">
-                        <div class="flex items-center gap-3 mb-2.5">
-                            <span class="w-9 h-9 rounded-2xl bg-amber-400/15 text-amber-300 flex items-center justify-center text-lg">☉</span>
-                            <h3 class="text-lg font-bold text-white" data-i18n="cardOverview">Overall Energy (आज का सार)</h3>
-                        </div>
-                        <p id="text-overview" class="text-slate-200 text-sm sm:text-base leading-relaxed"></p>
-                    </article>
-
-                    <!-- Career & Finance -->
-                    <article class="celestial-card rounded-3xl p-5 sm:p-6">
-                        <div class="flex items-center gap-3 mb-2.5">
-                            <span class="w-9 h-9 rounded-2xl bg-emerald-400/15 text-emerald-300 flex items-center justify-center text-lg">❖</span>
-                            <h3 class="text-base sm:text-lg font-bold text-white" data-i18n="cardCareer">Career &amp; Finance</h3>
-                        </div>
-                        <p id="text-career" class="text-slate-300 text-sm leading-relaxed"></p>
-                    </article>
-
-                    <!-- Love & Relationships -->
-                    <article class="celestial-card rounded-3xl p-5 sm:p-6">
-                        <div class="flex items-center gap-3 mb-2.5">
-                            <span class="w-9 h-9 rounded-2xl bg-rose-400/15 text-rose-300 flex items-center justify-center text-lg">♥</span>
-                            <h3 class="text-base sm:text-lg font-bold text-white" data-i18n="cardLove">Love &amp; Relationships</h3>
-                        </div>
-                        <p id="text-love" class="text-slate-300 text-sm leading-relaxed"></p>
-                    </article>
-
-                    <!-- Health & Peace -->
-                    <article class="celestial-card rounded-3xl p-5 sm:p-6">
-                        <div class="flex items-center gap-3 mb-2.5">
-                            <span class="w-9 h-9 rounded-2xl bg-sky-400/15 text-sky-300 flex items-center justify-center text-lg">🌿</span>
-                            <h3 class="text-base sm:text-lg font-bold text-white" data-i18n="cardHealth">Health &amp; Peace</h3>
-                        </div>
-                        <p id="text-health" class="text-slate-300 text-sm leading-relaxed"></p>
-                    </article>
-
-                    <!-- Sacred Mantra & Upay -->
-                    <article class="celestial-card-glow rounded-3xl p-5 sm:p-6">
-                        <div class="flex items-center gap-3 mb-2.5">
-                            <span class="w-9 h-9 rounded-2xl bg-amber-400/20 text-amber-300 flex items-center justify-center text-lg">ॐ</span>
-                            <h3 class="text-base sm:text-lg font-bold text-amber-200" data-i18n="cardMantra">Sacred Mantra &amp; Upay</h3>
-                        </div>
-                        <p id="text-remedy" class="text-slate-200 text-sm leading-relaxed mb-3"></p>
-                        <div class="p-3.5 rounded-2xl bg-dusk-950/90 border border-amber-300/30 text-center space-y-1">
-                            <p id="text-mantra" class="text-amber-300 font-bold text-sm sm:text-base tracking-wide"></p>
-                            <p id="text-mantra-meaning" class="text-[11px] text-slate-400"></p>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Dashboard Footer Actions -->
-                <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" id="btn-footer-edit" class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold bg-dusk-850 hover:bg-dusk-800 text-slate-200 border border-amber-400/25 transition-all">
-                            ✎ <span data-i18n="editDetails">Edit Birth Details</span>
-                        </button>
-                        <button type="button" id="btn-clear-profile" class="hidden px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold bg-rose-950/60 hover:bg-rose-900/70 text-rose-200 border border-rose-400/30 transition-all">
-                            <span data-i18n="clearSaved">Clear Saved</span>
-                        </button>
-                    </div>
-
-                    <button type="button" id="btn-share-rashifal"
-                        class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-amber-300 via-amber-400 to-rose-300 text-dusk-950 hover:brightness-105 shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2">
-                        <span>📋</span>
-                        <span data-i18n="shareRashifal">Copy Rashifal for WhatsApp / Instagram</span>
-                    </button>
-                </div>
-            </section>
-        </div>
-
-        <!-- ===================================================================== -->
-        <!-- SECTION 2: KUNDLI MILAN (36-POINT ASHTAKOOT COMPATIBILITY)             -->
-        <!-- ===================================================================== -->
-        <section id="view-milan" class="hidden animate-reveal space-y-6">
-
-            <!-- Milan Intro Header -->
-            <div class="relative overflow-hidden celestial-card-glow rounded-3xl p-6 sm:p-8 text-center">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-400/15 border border-rose-300/35 text-rose-200 text-xs font-semibold mb-3">
-                    <span>🪷</span>
-                    <span data-i18n="milanTag">Vedic Ashtakoot Guna Milan • 36 Points</span>
-                </div>
-                <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mb-2" data-i18n="milanHeading">
-                    Kundli Milan &amp; Soul Connection
-                </h2>
-                <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed" data-i18n="milanSub">
-                    Compare birth charts of two individuals to discover their Chandra Rashi harmony, 36-point Ashtakoot Guna score, emotional bond, and relationship insights.
-                </p>
-
-                <!-- Quick Action Helper Pills -->
-                <div class="flex flex-wrap items-center justify-center gap-2.5 mt-4">
-                    <button type="button" id="btn-sample-couple"
-                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-400/15 hover:bg-amber-400/25 text-amber-200 border border-amber-300/30 transition-all">
-                        ✨ <span data-i18n="trySampleCouple">Try Sample Couple</span>
-                    </button>
-                    <button type="button" id="btn-swap-couple"
-                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-dusk-850 hover:bg-dusk-800 text-slate-200 border border-slate-600/50 transition-all">
-                        ⇄ <span data-i18n="swapPersons">Swap Person 1 &amp; 2</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Two-Person Birth Details Form -->
-            <form id="milan-match-form" novalidate class="space-y-5">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <!-- PERSON 1 CARD -->
-                    <div class="celestial-card rounded-3xl p-5 sm:p-6 space-y-4 border-t-4 border-t-amber-400">
-                        <div class="flex items-center justify-between gap-2">
-                            <h3 class="text-base sm:text-lg font-bold text-amber-300 flex items-center gap-2">
-                                <span class="w-7 h-7 rounded-full bg-amber-400/20 text-amber-300 text-xs flex items-center justify-center font-bold">1</span>
-                                <span data-i18n="person1Title">Person 1 (पहला व्यक्ति)</span>
-                            </h3>
-                            <button type="button" id="btn-copy-my-to-p1" class="text-[11px] font-semibold text-amber-200 hover:text-white underline">
-                                <span data-i18n="fillMyDetails">Use My Details</span>
-                            </button>
-                        </div>
-
-                        <div>
-                            <label for="m1-name" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelName">Full Name (Optional)</label>
-                            <input type="text" id="m1-name" placeholder="e.g., Rohan Verma"
-                                class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-amber-400">
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label for="m1-dob" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelDob">Date of Birth *</label>
-                                <input type="date" id="m1-dob" value="1995-04-18" required
-                                    class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white text-sm focus:outline-none focus:border-amber-400">
-                            </div>
-                            <div>
-                                <label for="m1-tob" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelTob">Time of Birth *</label>
-                                <input type="time" id="m1-tob" value="10:15" required
-                                    class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white text-sm focus:outline-none focus:border-amber-400">
-                            </div>
-                        </div>
-
-                        <div class="relative">
-                            <label for="m1-city" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelPob">Place of Birth *</label>
-                            <input type="text" id="m1-city" value="Jaipur, Rajasthan" autocomplete="off" placeholder="Search city..."
-                                class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-amber-400/25 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-amber-400">
-                            <ul id="m1-city-list" class="hidden absolute z-30 w-full mt-1 max-h-48 overflow-y-auto rounded-2xl bg-dusk-950 border border-amber-400/40 shadow-2xl divide-y divide-slate-800"></ul>
-                        </div>
-                    </div>
-
-                    <!-- PERSON 2 CARD -->
-                    <div class="celestial-card rounded-3xl p-5 sm:p-6 space-y-4 border-t-4 border-t-rose-400">
-                        <div class="flex items-center justify-between gap-2">
-                            <h3 class="text-base sm:text-lg font-bold text-rose-300 flex items-center gap-2">
-                                <span class="w-7 h-7 rounded-full bg-rose-400/20 text-rose-300 text-xs flex items-center justify-center font-bold">2</span>
-                                <span data-i18n="person2Title">Person 2 (दूसरा व्यक्ति)</span>
-                            </h3>
-                            <span class="text-[11px] text-rose-200/75 font-medium" data-i18n="partnerTag">Partner / Match</span>
-                        </div>
-
-                        <div>
-                            <label for="m2-name" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelName">Full Name (Optional)</label>
-                            <input type="text" id="m2-name" placeholder="e.g., Ananya Nair"
-                                class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-rose-400/25 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-rose-400">
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label for="m2-dob" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelDob">Date of Birth *</label>
-                                <input type="date" id="m2-dob" value="1997-11-09" required
-                                    class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-rose-400/25 text-white text-sm focus:outline-none focus:border-rose-400">
-                            </div>
-                            <div>
-                                <label for="m2-tob" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelTob">Time of Birth *</label>
-                                <input type="time" id="m2-tob" value="16:40" required
-                                    class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-rose-400/25 text-white text-sm focus:outline-none focus:border-rose-400">
-                            </div>
-                        </div>
-
-                        <div class="relative">
-                            <label for="m2-city" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5" data-i18n="labelPob">Place of Birth *</label>
-                            <input type="text" id="m2-city" value="Mumbai, Maharashtra" autocomplete="off" placeholder="Search city..."
-                                class="w-full px-3.5 py-2.5 rounded-2xl bg-dusk-950/90 border border-rose-400/25 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-rose-400">
-                            <ul id="m2-city-list" class="hidden absolute z-30 w-full mt-1 max-h-48 overflow-y-auto rounded-2xl bg-dusk-950 border border-rose-400/40 shadow-2xl divide-y divide-slate-800"></ul>
-                        </div>
-                    </div>
-                </div>
-
-                <p id="milan-form-error" class="hidden text-xs text-rose-300 bg-rose-500/15 border border-rose-400/30 rounded-xl px-3.5 py-2.5 text-center"></p>
-
-                <!-- Submit Match Button -->
-                <div class="flex justify-center pt-1">
-                    <button type="submit" id="milan-submit-btn"
-                        class="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-dusk-950 bg-gradient-to-r from-amber-300 via-amber-400 to-rose-300 hover:brightness-105 shadow-xl shadow-amber-500/25 active:scale-[0.99] transition-all flex items-center justify-center gap-2.5">
-                        <span>💞</span>
-                        <span data-i18n="checkMilanBtn">Calculate Kundli Milan (36 Gunas)</span>
-                    </button>
-                </div>
-            </form>
-
-            <!-- KUNDLI MILAN RESULTS CONTAINER -->
-            <div id="milan-results-area" class="hidden animate-reveal space-y-6">
-
-                <!-- Circular Score Gauge & Verdict Card -->
-                <div class="celestial-card-glow rounded-3xl p-6 sm:p-8">
-                    <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8">
-                        <!-- Animated SVG Circular Guna Gauge -->
-                        <div class="relative w-40 h-40 shrink-0 flex items-center justify-center">
-                            <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
-                                <circle id="milan-gauge-ring" cx="60" cy="60" r="50" fill="none" stroke="url(#gunaGrad)" stroke-width="10"
-                                    stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16"
-                                    style="transition: stroke-dashoffset 0.9s cubic-bezier(0.22, 1, 0.36, 1);"/>
-                                <defs>
-                                    <linearGradient id="gunaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#fcd34d"/>
-                                        <stop offset="50%" stop-color="#f472b6"/>
-                                        <stop offset="100%" stop-color="#34d399"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span id="milan-score-big" class="font-display text-3xl font-extrabold text-amber-300 leading-none">26</span>
-                                <span class="text-xs text-slate-400 font-semibold mt-1">/ 36 <span data-i18n="gunasWord">Gunas</span></span>
-                                <span id="milan-pct-pill" class="text-[10px] font-bold text-emerald-300 mt-0.5">72%</span>
-                            </div>
-                        </div>
-
-                        <!-- Match Verdict & Narrative -->
-                        <div class="flex-1 text-center md:text-left space-y-2.5">
-                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                                <span id="milan-verdict-tag" class="px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-400/20 text-emerald-200 border border-emerald-400/40">
-                                    उत्तम मिलान • Auspicious Match
-                                </span>
-                                <span id="milan-dosha-tag" class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-400/15 text-amber-200 border border-amber-300/30">
-                                    Nadi &amp; Bhakoot Balanced
-                                </span>
-                            </div>
-                            <h3 id="milan-names-heading" class="font-display text-xl sm:text-2xl font-bold text-white">
-                                Rohan &amp; Ananya
-                            </h3>
-                            <p id="milan-summary-text" class="text-slate-200 text-sm sm:text-base leading-relaxed"></p>
-                        </div>
-                    </div>
-
-                    <!-- Side-by-Side Chandra Rashi & Nakshatra Comparison -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 pt-6 border-t border-amber-400/15">
-                        <div class="bg-dusk-950/80 rounded-2xl p-4 border border-amber-400/25">
-                            <div class="text-xs font-bold text-amber-300 mb-1" id="res-p1-name">Person 1</div>
-                            <div class="text-base font-bold text-white" id="res-p1-rashi">Mesha (Aries)</div>
-                            <div class="text-xs text-slate-300 mt-0.5" id="res-p1-nak">Nakshatra: Ashwini (Pada 1)</div>
-                            <div class="text-[11px] text-slate-400 mt-1" id="res-p1-meta">Lord: Mars • Fire</div>
-                        </div>
-
-                        <div class="bg-dusk-950/80 rounded-2xl p-4 border border-rose-400/25">
-                            <div class="text-xs font-bold text-rose-300 mb-1" id="res-p2-name">Person 2</div>
-                            <div class="text-base font-bold text-white" id="res-p2-rashi">Vrishabha (Taurus)</div>
-                            <div class="text-xs text-slate-300 mt-0.5" id="res-p2-nak">Nakshatra: Rohini (Pada 2)</div>
-                            <div class="text-[11px] text-slate-400 mt-1" id="res-p2-meta">Lord: Venus • Earth</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 8 Ashtakoot Breakdown Cards -->
-                <div class="celestial-card rounded-3xl p-5 sm:p-6">
-                    <h3 class="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <span class="text-amber-300">✦</span>
-                        <span data-i18n="ashtakootHeading">Ashtakoot Breakdown (8 Compatibility Factors)</span>
-                    </h3>
-                    <div id="milan-koots-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
-                </div>
-
-                <!-- Emotional, Mental & Spiritual Connection Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <article class="celestial-card rounded-3xl p-5 border-t-2 border-t-rose-400">
-                        <h4 class="text-sm font-bold text-rose-200 mb-2 flex items-center gap-2">
-                            <span>♥</span> <span data-i18n="connEmotional">Emotional &amp; Heart Bond</span>
-                        </h4>
-                        <p id="milan-emotional-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
-                    </article>
-
-                    <article class="celestial-card rounded-3xl p-5 border-t-2 border-t-amber-400">
-                        <h4 class="text-sm font-bold text-amber-200 mb-2 flex items-center gap-2">
-                            <span>✦</span> <span data-i18n="connMental">Mental &amp; Communication</span>
-                        </h4>
-                        <p id="milan-mental-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
-                    </article>
-
-                    <article class="celestial-card rounded-3xl p-5 border-t-2 border-t-emerald-400">
-                        <h4 class="text-sm font-bold text-emerald-200 mb-2 flex items-center gap-2">
-                            <span>ॐ</span> <span data-i18n="connSpiritual">Spiritual &amp; Life Growth</span>
-                        </h4>
-                        <p id="milan-spiritual-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
-                    </article>
-                </div>
-
-                <!-- Share Match Report Footer -->
-                <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
-                    <p class="text-xs text-slate-400 max-w-lg" data-i18n="milanNote">
-                        Calculated using Sidereal Chandra Rashi &amp; Nakshatra (Lahiri Ayanamsa) traditional Ashtakoot principles.
-                    </p>
-                    <button type="button" id="btn-share-milan"
-                        class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-amber-300 via-amber-400 to-rose-300 text-dusk-950 hover:brightness-105 shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2">
-                        <span>📋</span>
-                        <span data-i18n="shareMilan">Copy Match Report</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Owner Branding & PWA Footer -->
-        <footer class="mt-10 pt-6 border-t border-amber-400/15 text-center space-y-2 text-xs text-slate-400">
-            <p class="font-medium text-amber-200/80">© Jyotish Darshan • Vedic Astrology &amp; Kundli Milan</p>
-            <p class="text-[11px] text-slate-500" data-i18n="footerSub">
-                Sidereal Lahiri Ayanamsa Calculations • Installable Progressive Web App
-            </p>
-        </footer>
-    </main>
-
-    <!-- Bilingual PWA Add-to-Home-Screen Guide Modal -->
-    <div id="pwa-guide-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-dusk-950/85 backdrop-blur-md">
-        <div class="celestial-card-glow rounded-3xl max-w-md w-full p-6 sm:p-7 space-y-4 animate-reveal relative">
-            <div class="flex items-center justify-between gap-3">
-                <div class="flex items-center gap-2.5">
-                    <span class="w-9 h-9 rounded-2xl bg-amber-400/20 text-amber-300 flex items-center justify-center text-lg font-bold">ॐ</span>
-                    <h3 class="font-display text-lg font-bold text-white" data-i18n="pwaModalTitle">Install Jyotish Darshan App</h3>
-                </div>
-                <button type="button" id="pwa-modal-close" class="w-8 h-8 rounded-full bg-dusk-900 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold">✕</button>
-            </div>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed" data-i18n="pwaModalIntro">
-                Add Jyotish Darshan to your phone's Home Screen for instant one-tap access to Daily Rashifal and Kundli Milan—just like a native app:
-            </p>
-            <div class="space-y-2.5 text-xs text-slate-200">
-                <div class="p-3 rounded-2xl bg-dusk-950/90 border border-amber-400/20">
-                    <p class="font-bold text-amber-300 mb-1" data-i18n="pwaAndroidTitle">Android (Chrome / Edge)</p>
-                    <p class="text-slate-300" data-i18n="pwaAndroidSteps">Tap the top-right menu (⋮) → select "Add to Home screen" or "Install app".</p>
-                </div>
-                <div class="p-3 rounded-2xl bg-dusk-950/90 border border-rose-400/20">
-                    <p class="font-bold text-rose-300 mb-1" data-i18n="pwaIosTitle">iPhone / iPad (Safari)</p>
-                    <p class="text-slate-300" data-i18n="pwaIosSteps">Tap the Share icon (↑) at the bottom → scroll down and tap "Add to Home Screen".</p>
-                </div>
-            </div>
-            <div class="pt-1 flex justify-end">
-                <button type="button" id="pwa-modal-ok" class="px-5 py-2.5 rounded-2xl text-xs font-bold bg-gradient-to-r from-amber-300 to-amber-500 text-dusk-950 shadow">
-                    <span data-i18n="pwaGotIt">Got It</span>
-                </button>
-            </div>
-        </div>
+    <div class="mode-tabs">
+      <button type="button" id="tabRashifal" class="mode-tab active">Daily Rashifal</button>
+      <button type="button" id="tabKundli" class="mode-tab">Kundli Milan</button>
     </div>
 
-    <script>
-        (function () {
-            "use strict";
-
-            /**
-             * =========================================================================
-             * 0. PRIVACY-SAFE GOOGLE ANALYTICS (GA4) & PWA BOOTSTRAP
-             * =========================================================================
-             */
-            function trackEvent(eventName, params) {
-                try {
-                    if (
-                        typeof window.gtag === "function" &&
-                        typeof GA_MEASUREMENT_ID !== "undefined" &&
-                        GA_MEASUREMENT_ID &&
-                        GA_MEASUREMENT_ID !== "G-XXXXXXXXXX"
-                    ) {
-                        window.gtag("event", eventName, params || {});
-                    }
-                } catch (e) {}
-            }
-
-            let deferredInstallPrompt = null;
-
-            function initPWA() {
-                // Generate inline golden lotus & crescent moon SVG icons for Web App Manifest
-                const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <defs>
-                        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#0b0d1e"/>
-                            <stop offset="100%" stop-color="#192145"/>
-                        </linearGradient>
-                        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#fde68a"/>
-                            <stop offset="55%" stop-color="#f59e0b"/>
-                            <stop offset="100%" stop-color="#f472b6"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-                    <circle cx="256" cy="256" r="196" fill="none" stroke="url(#gold)" stroke-width="10" opacity="0.5"/>
-                    <path d="M292 128a112 112 0 1 0 92 176 92 92 0 1 1-92-176z" fill="url(#gold)"/>
-                    <path d="M256 268c-28 0-56 22-66 56 26-8 46-4 66 14 20-18 40-22 66-14-10-34-38-56-66-56z" fill="#fde68a"/>
-                    <text x="256" y="422" text-anchor="middle" font-family="serif" font-size="52" font-weight="bold" fill="#fcd34d">ॐ</text>
-                </svg>`;
-                const iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgIcon);
-
-                const manifestObj = {
-                    name: "Jyotish Darshan — Daily Rashifal & Kundli Milan",
-                    short_name: "Jyotish Darshan",
-                    description: "Vedic Daily Rashifal & 36-Point Ashtakoot Kundli Milan",
-                    start_url: "./",
-                    scope: "./",
-                    display: "standalone",
-                    orientation: "portrait",
-                    background_color: "#0b0d1e",
-                    theme_color: "#0b0d1e",
-                    icons: [
-                        { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
-                        { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
-                    ]
-                };
-
-                try {
-                    const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: "application/manifest+json" });
-                    const manifestLink = document.createElement("link");
-                    manifestLink.rel = "manifest";
-                    manifestLink.href = URL.createObjectURL(manifestBlob);
-                    document.head.appendChild(manifestLink);
-                } catch (e) {}
-
-                // Register lightweight inline Blob Service Worker on HTTPS/localhost
-                if ("serviceWorker" in navigator && (window.location.protocol === "https:" || window.location.hostname === "localhost")) {
-                    try {
-                        const swCode = `
-                            self.addEventListener('install', (e) => self.skipWaiting());
-                            self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
-                            self.addEventListener('fetch', (e) => {
-                                if (e.request.method !== 'GET') return;
-                                e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-                            });
-                        `;
-                        const swBlob = new Blob([swCode], { type: "application/javascript" });
-                        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
-                    } catch (e) {}
-                }
-
-                window.addEventListener("beforeinstallprompt", (e) => {
-                    e.preventDefault();
-                    deferredInstallPrompt = e;
-                });
-
-                window.addEventListener("appinstalled", () => {
-                    deferredInstallPrompt = null;
-                    trackEvent("pwa_installed", { language: STATE.lang });
-                    showBanner(STATE.lang === "hi" ? "Jyotish Darshan ऐप आपके फ़ोन में इंस्टॉल हो गया है!" : "Jyotish Darshan installed to your Home Screen!");
-                });
-            }
-
-            /**
-             * =========================================================================
-             * 1. TWINKLING STARFIELD BACKGROUND CANVAS
-             * =========================================================================
-             */
-            function initStarfield() {
-                const canvas = document.getElementById("star-canvas");
-                if (!canvas) return;
-                const ctx = canvas.getContext("2d");
-                let stars = [];
-
-                function resize() {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                    const count = Math.min(95, Math.floor((canvas.width * canvas.height) / 14000));
-                    stars = Array.from({ length: count }, () => ({
-                        x: Math.random() * canvas.width,
-                        y: Math.random() * canvas.height,
-                        r: Math.random() * 1.4 + 0.3,
-                        alpha: Math.random() * 0.7 + 0.2,
-                        speed: Math.random() * 0.015 + 0.004,
-                        phase: Math.random() * Math.PI * 2,
-                        warm: Math.random() > 0.65
-                    }));
-                }
-
-                function draw(t) {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    for (const s of stars) {
-                        const twinkle = s.alpha * (0.65 + 0.35 * Math.sin(t * s.speed + s.phase));
-                        ctx.beginPath();
-                        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-                        ctx.fillStyle = s.warm
-                            ? `rgba(253, 224, 71, ${twinkle.toFixed(3)})`
-                            : `rgba(248, 250, 252, ${twinkle.toFixed(3)})`;
-                        ctx.fill();
-                    }
-                    requestAnimationFrame(draw);
-                }
-
-                window.addEventListener("resize", resize);
-                resize();
-                requestAnimationFrame(draw);
-            }
-
-            /**
-             * =========================================================================
-             * 2. COMPREHENSIVE INDIAN & GLOBAL CITIES DATABASE (65+ CITIES)
-             * =========================================================================
-             */
-            const CITIES = [
-                { name: "New Delhi, Delhi", lat: 28.6139, lon: 77.2090, tz: 5.5 },
-                { name: "Mumbai, Maharashtra", lat: 19.0760, lon: 72.8777, tz: 5.5 },
-                { name: "Raipur, Chhattisgarh", lat: 21.2514, lon: 81.6296, tz: 5.5 },
-                { name: "Bilaspur, Chhattisgarh", lat: 22.0797, lon: 82.1409, tz: 5.5 },
-                { name: "Durg / Bhilai, Chhattisgarh", lat: 21.1904, lon: 81.2849, tz: 5.5 },
-                { name: "Bengaluru, Karnataka", lat: 12.9716, lon: 77.5946, tz: 5.5 },
-                { name: "Kolkata, West Bengal", lat: 22.5726, lon: 88.3639, tz: 5.5 },
-                { name: "Chennai, Tamil Nadu", lat: 13.0827, lon: 80.2707, tz: 5.5 },
-                { name: "Hyderabad, Telangana", lat: 17.3850, lon: 78.4867, tz: 5.5 },
-                { name: "Pune, Maharashtra", lat: 18.5204, lon: 73.8567, tz: 5.5 },
-                { name: "Jaipur, Rajasthan", lat: 26.9124, lon: 75.7873, tz: 5.5 },
-                { name: "Lucknow, Uttar Pradesh", lat: 26.8467, lon: 80.9462, tz: 5.5 },
-                { name: "Varanasi, Uttar Pradesh", lat: 25.3176, lon: 82.9739, tz: 5.5 },
-                { name: "Prayagraj, Uttar Pradesh", lat: 25.4358, lon: 81.8463, tz: 5.5 },
-                { name: "Kanpur, Uttar Pradesh", lat: 26.4499, lon: 80.3319, tz: 5.5 },
-                { name: "Agra, Uttar Pradesh", lat: 27.1767, lon: 78.0081, tz: 5.5 },
-                { name: "Ayodhya, Uttar Pradesh", lat: 26.7922, lon: 82.1998, tz: 5.5 },
-                { name: "Mathura, Uttar Pradesh", lat: 27.4924, lon: 77.6737, tz: 5.5 },
-                { name: "Noida, Uttar Pradesh", lat: 28.5355, lon: 77.3910, tz: 5.5 },
-                { name: "Ghaziabad, Uttar Pradesh", lat: 28.6692, lon: 77.4538, tz: 5.5 },
-                { name: "Bhopal, Madhya Pradesh", lat: 23.2599, lon: 77.4126, tz: 5.5 },
-                { name: "Indore, Madhya Pradesh", lat: 22.7196, lon: 75.8577, tz: 5.5 },
-                { name: "Ujjain, Madhya Pradesh", lat: 23.1765, lon: 75.7885, tz: 5.5 },
-                { name: "Jabalpur, Madhya Pradesh", lat: 23.1815, lon: 79.9864, tz: 5.5 },
-                { name: "Gwalior, Madhya Pradesh", lat: 26.2183, lon: 78.1828, tz: 5.5 },
-                { name: "Patna, Bihar", lat: 25.5941, lon: 85.1376, tz: 5.5 },
-                { name: "Gaya, Bihar", lat: 24.7914, lon: 85.0002, tz: 5.5 },
-                { name: "Ranchi, Jharkhand", lat: 23.3441, lon: 85.3096, tz: 5.5 },
-                { name: "Jamshedpur, Jharkhand", lat: 22.8046, lon: 86.2029, tz: 5.5 },
-                { name: "Bhubaneswar, Odisha", lat: 20.2961, lon: 85.8245, tz: 5.5 },
-                { name: "Puri, Odisha", lat: 19.8135, lon: 85.8312, tz: 5.5 },
-                { name: "Cuttack, Odisha", lat: 20.4625, lon: 85.8830, tz: 5.5 },
-                { name: "Ahmedabad, Gujarat", lat: 23.0225, lon: 72.5714, tz: 5.5 },
-                { name: "Surat, Gujarat", lat: 21.1702, lon: 72.8311, tz: 5.5 },
-                { name: "Vadodara, Gujarat", lat: 22.3072, lon: 73.1812, tz: 5.5 },
-                { name: "Rajkot, Gujarat", lat: 22.3039, lon: 70.8022, tz: 5.5 },
-                { name: "Nagpur, Maharashtra", lat: 21.1458, lon: 79.0882, tz: 5.5 },
-                { name: "Nashik, Maharashtra", lat: 19.9975, lon: 73.7898, tz: 5.5 },
-                { name: "Chandigarh", lat: 30.7333, lon: 76.7794, tz: 5.5 },
-                { name: "Amritsar, Punjab", lat: 31.6340, lon: 74.8723, tz: 5.5 },
-                { name: "Ludhiana, Punjab", lat: 30.9010, lon: 75.8573, tz: 5.5 },
-                { name: "Gurugram, Haryana", lat: 28.4595, lon: 77.0266, tz: 5.5 },
-                { name: "Faridabad, Haryana", lat: 28.4089, lon: 77.3178, tz: 5.5 },
-                { name: "Dehradun, Uttarakhand", lat: 30.3165, lon: 78.0322, tz: 5.5 },
-                { name: "Haridwar, Uttarakhand", lat: 29.9457, lon: 78.1642, tz: 5.5 },
-                { name: "Shimla, Himachal Pradesh", lat: 31.1048, lon: 77.1734, tz: 5.5 },
-                { name: "Jammu, J&K", lat: 32.7266, lon: 74.8570, tz: 5.5 },
-                { name: "Srinagar, J&K", lat: 34.0837, lon: 74.7973, tz: 5.5 },
-                { name: "Guwahati, Assam", lat: 26.1445, lon: 91.7362, tz: 5.5 },
-                { name: "Udaipur, Rajasthan", lat: 24.5854, lon: 73.7125, tz: 5.5 },
-                { name: "Jodhpur, Rajasthan", lat: 26.2389, lon: 73.0243, tz: 5.5 },
-                { name: "Kota, Rajasthan", lat: 25.2138, lon: 75.8648, tz: 5.5 },
-                { name: "Kochi, Kerala", lat: 9.9312, lon: 76.2673, tz: 5.5 },
-                { name: "Thiruvananthapuram, Kerala", lat: 8.5241, lon: 76.9366, tz: 5.5 },
-                { name: "Coimbatore, Tamil Nadu", lat: 11.0168, lon: 76.9558, tz: 5.5 },
-                { name: "Madurai, Tamil Nadu", lat: 9.9252, lon: 78.1198, tz: 5.5 },
-                { name: "Visakhapatnam, Andhra Pradesh", lat: 17.6868, lon: 83.2185, tz: 5.5 },
-                { name: "Vijayawada, Andhra Pradesh", lat: 16.5062, lon: 80.6480, tz: 5.5 },
-                { name: "Mysuru, Karnataka", lat: 12.2958, lon: 76.6394, tz: 5.5 },
-                { name: "Panaji, Goa", lat: 15.4909, lon: 73.8278, tz: 5.5 },
-                { name: "Kathmandu, Nepal", lat: 27.7172, lon: 85.3240, tz: 5.75 },
-                { name: "Dubai, UAE", lat: 25.2048, lon: 55.2708, tz: 4.0 },
-                { name: "London, UK", lat: 51.5072, lon: -0.1276, tz: 0.0 },
-                { name: "New York, USA", lat: 40.7128, lon: -74.0060, tz: -5.0 },
-                { name: "Toronto, Canada", lat: 43.6532, lon: -79.3832, tz: -5.0 },
-                { name: "Singapore", lat: 1.3521, lon: 103.8198, tz: 8.0 }
-            ];
-
-            /**
-             * =========================================================================
-             * 3. RASHIS, NAKSHATRAS, MANTRAS & BILINGUAL HOROSCOPE BANK
-             * =========================================================================
-             */
-            const RASHIS = [
-                { id: 0, en: "Mesha", western: "Aries", hi: "मेष", glyph: "♈", lordEn: "Mars (Mangal)", lordHi: "मंगल", elEn: "Fire (Agni)", elHi: "अग्नि तत्व", mantra: "ॐ क्रां क्रीं क्रौं सः भौमाय नमः", meaningEn: "Salutations to Mangal for courage, clarity & peaceful strength.", meaningHi: "साहस, स्पष्टता और शांत शक्ति के लिए मंगल देव को नमन।" },
-                { id: 1, en: "Vrishabha", western: "Taurus", hi: "वृषभ", glyph: "♉", lordEn: "Venus (Shukra)", lordHi: "शुक्र", elEn: "Earth (Prithvi)", elHi: "पृथ्वी तत्व", mantra: "ॐ द्रां द्रीं द्रौं सः शुक्राय नमः", meaningEn: "Salutations to Shukra for grace, abundance & harmonious bonds.", meaningHi: "सौंदर्य, समृद्धि और मधुर संबंधों के लिए शुक्र देव को नमन।" },
-                { id: 2, en: "Mithuna", western: "Gemini", hi: "मिथुन", glyph: "♊", lordEn: "Mercury (Budh)", lordHi: "बुध", elEn: "Air (Vayu)", elHi: "वायु तत्व", mantra: "ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः", meaningEn: "Salutations to Budh for wisdom, eloquence & balanced thought.", meaningHi: "विवेक, मधुर वाणी और संतुलित बुद्धि के लिए बुध देव को नमन।" },
-                { id: 3, en: "Karka", western: "Cancer", hi: "कर्क", glyph: "♋", lordEn: "Moon (Chandra)", lordHi: "चन्द्र", elEn: "Water (Jala)", elHi: "जल तत्व", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्रमसे नमः", meaningEn: "Salutations to Chandra for emotional serenity & intuition.", meaningHi: "मानसिक शांति और अंतर्ज्ञान के लिए चंद्र देव को नमन।" },
-                { id: 4, en: "Simha", western: "Leo", hi: "सिंह", glyph: "♌", lordEn: "Sun (Surya)", lordHi: "सूर्य", elEn: "Fire (Agni)", elHi: "अग्नि तत्व", mantra: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः", meaningEn: "Salutations to Surya for inner radiance, vitality & purpose.", meaningHi: "आत्मतेज, ऊर्जा और सद्बुद्धि के लिए सूर्य देव को नमन।" },
-                { id: 5, en: "Kanya", western: "Virgo", hi: "कन्या", glyph: "♍", lordEn: "Mercury (Budh)", lordHi: "बुध", elEn: "Earth (Prithvi)", elHi: "पृथ्वी तत्व", mantra: "ॐ ॐ श्रीं श्रीं बुधाय नमः", meaningEn: "Salutations to Budh for discernment, healing & calm focus.", meaningHi: "एकाग्रता, आरोग्य और विवेक के लिए बुध देव को नमन।" },
-                { id: 6, en: "Tula", western: "Libra", hi: "तुला", glyph: "♎", lordEn: "Venus (Shukra)", lordHi: "शुक्र", elEn: "Air (Vayu)", elHi: "वायु तत्व", mantra: "ॐ शुं शुक्राय नमः", meaningEn: "Salutations to Shukra for balance, beauty & heartfelt peace.", meaningHi: "जीवन संतुलन और प्रेमपूर्ण शांति के लिए शुक्र देव को नमन।" },
-                { id: 7, en: "Vrischika", western: "Scorpio", hi: "वृश्चिक", glyph: "♏", lordEn: "Mars (Mangal)", lordHi: "मंगल", elEn: "Water (Jala)", elHi: "जल तत्व", mantra: "ॐ अं अंगारकाय नमः", meaningEn: "Salutations to Mangal for deep resilience & transformation.", meaningHi: "आंतरिक दृढ़ता और सकारात्मक परिवर्तन के लिए मंगल को नमन।" },
-                { id: 8, en: "Dhanu", western: "Sagittarius", hi: "धनु", glyph: "♐", lordEn: "Jupiter (Brihaspati)", lordHi: "बृहस्पति", elEn: "Fire (Agni)", elHi: "अग्नि तत्व", mantra: "ॐ ग्रां ग्रीं ग्रौं सः गुरवे नमः", meaningEn: "Salutations to Brihaspati for dharma, fortune & higher wisdom.", meaningHi: "धर्म, सौभाग्य और उच्च ज्ञान के लिए देवगुरु बृहस्पति को नमन।" },
-                { id: 9, en: "Makara", western: "Capricorn", hi: "मकर", glyph: "♑", lordEn: "Saturn (Shani)", lordHi: "शनि", elEn: "Earth (Prithvi)", elHi: "पृथ्वी तत्व", mantra: "ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः", meaningEn: "Salutations to Shani for patience, steady progress & integrity.", meaningHi: "धैर्य, स्थिर प्रगति और कर्तव्यनिष्ठा के लिए शनि देव को नमन।" },
-                { id: 10, en: "Kumbha", western: "Aquarius", hi: "कुंभ", glyph: "♒", lordEn: "Saturn (Shani)", lordHi: "शनि", elEn: "Air (Vayu)", elHi: "वायु तत्व", mantra: "ॐ शं शनैश्चराय नमः", meaningEn: "Salutations to Shani for clarity of vision & selfless service.", meaningHi: "दूरदृष्टि और सेवा भाव के लिए शनि देव को नमन।" },
-                { id: 11, en: "Meena", western: "Pisces", hi: "मीन", glyph: "♓", lordEn: "Jupiter (Brihaspati)", lordHi: "बृहस्पति", elEn: "Water (Jala)", elHi: "जल तत्व", mantra: "ॐ बृं बृहस्पतये नमः", meaningEn: "Salutations to Brihaspati for compassion, intuition & grace.", meaningHi: "करुणा, आध्यात्मिक शांति और कृपा के लिए बृहस्पति देव को नमन।" }
-            ];
-
-            const NAKSHATRAS = [
-                { en: "Ashwini", hi: "अश्विनी" }, { en: "Bharani", hi: "भरणी" }, { en: "Krittika", hi: "कृत्तिका" },
-                { en: "Rohini", hi: "रोहिणी" }, { en: "Mrigashira", hi: "मृगशिरा" }, { en: "Ardra", hi: "आर्द्रा" },
-                { en: "Punarvasu", hi: "पुनर्वसु" }, { en: "Pushya", hi: "पुष्य" }, { en: "Ashlesha", hi: "आश्लेषा" },
-                { en: "Magha", hi: "मघा" }, { en: "Purva Phalguni", hi: "पूर्वा फाल्गुनी" }, { en: "Uttara Phalguni", hi: "उत्तरा फाल्गुनी" },
-                { en: "Hasta", hi: "हस्त" }, { en: "Chitra", hi: "चित्रा" }, { en: "Swati", hi: "स्वाति" },
-                { en: "Vishakha", hi: "विशाखा" }, { en: "Anuradha", hi: "अनुराधा" }, { en: "Jyeshtha", hi: "ज्येष्ठा" },
-                { en: "Mula", hi: "मूल" }, { en: "Purva Ashadha", hi: "पूर्वाषाढ़ा" }, { en: "Uttara Ashadha", hi: "उत्तराषाढ़ा" },
-                { en: "Shravana", hi: "श्रवण" }, { en: "Dhanishta", hi: "धनिष्ठा" }, { en: "Shatabhisha", hi: "शतभिषा" },
-                { en: "Purva Bhadrapada", hi: "पूर्वभाद्रपद" }, { en: "Uttara Bhadrapada", hi: "उत्तरभाद्रपद" }, { en: "Revati", hi: "रेवती" }
-            ];
-
-            const DAILY_BANK = {
-                overview: {
-                    en: [
-                        "Lunar transit brings calm mental clarity today. Trust your steady intuition, complete pending priorities before evening, and welcome unexpected good news from a well-wisher.",
-                        "A harmonious planetary alignment uplifts your confidence and creativity. Gentle patience in conversations will turn ordinary interactions into meaningful breakthroughs.",
-                        "Today favors mindful action over haste. Stepping back for a few quiet breaths before major decisions will align your efforts with lasting prosperity and peace.",
-                        "Positive cosmic energy surrounds personal initiatives and family harmony. Expressing gratitude early in the day opens doors to smooth progress and inner lightness."
-                    ],
-                    hi: [
-                        "आज चंद्रमा की शुभ स्थिति मन को शांति और स्पष्टता प्रदान करेगी। अपने अंतर्ज्ञान पर भरोसा रखें, शाम से पहले महत्वपूर्ण कार्य पूरे करें; किसी शुभचिंतक से सुखद समाचार मिल सकता है।",
-                        "ग्रहों का सौम्य संयोग आपके आत्मविश्वास और रचनात्मकता को बढ़ाएगा। बातचीत में विनम्रता और धैर्य रखने से सामान्य मुलाकातें भी लाभदायक परिणाम देंगी।",
-                        "आज जल्दबाज़ी के बजाय शांत और सोचे-समझे कदम उठाना श्रेष्ठ रहेगा। बड़े निर्णय से पहले कुछ क्षण शांत रहें, इससे कार्यों में सफलता और मानसिक सुकून मिलेगा।",
-                        "व्यक्तिगत प्रयासों और पारिवारिक सामंजस्य के लिए आज सकारात्मक ऊर्जा बनी रहेगी। दिन की शुरुआत कृतज्ञता के साथ करने से रुके हुए काम सुगमता से पूरे होंगे।"
-                    ]
-                },
-                career: {
-                    en: [
-                        "Colleagues and seniors appreciate your composed problem-solving. Avoid impulsive spending; focus on long-term savings and steady skill growth.",
-                        "A pending work discussion moves forward smoothly. Reviewing financial plans or budgets today brings clarity and protects against unnecessary expenses.",
-                        "Creative ideas flow effortlessly at work. Collaborative projects thrive when you listen first and share structured, practical suggestions.",
-                        "Recognition for consistent dedication is on the horizon. Keep important documents organized and finalize commitments during the Shubh Muhurat."
-                    ],
-                    hi: [
-                        "कार्यक्षेत्र में सहकर्मी और वरिष्ठ आपकी शांत कार्यशैली की सराहना करेंगे। अनावश्यक खर्चों से बचें और दीर्घकालिक बचत पर ध्यान दें।",
-                        "लंबित कार्य से जुड़ी चर्चा आज सकारात्मक दिशा में आगे बढ़ेगी। आर्थिक योजना या बजट की समीक्षा करने से धन संचय में मदद मिलेगी।",
-                        "कामकाज में नए और रचनात्मक विचार सफल होंगे। टीम के साथ मिलकर काम करने और दूसरों की बात ध्यान से सुनने से बेहतर परिणाम मिलेंगे।",
-                        "आपकी निरंतर मेहनत को जल्द ही पहचान मिलेगी। महत्वपूर्ण कागज़ात व्यवस्थित रखें और शुभ मुहूर्त में ज़रूरी निर्णय लें।"
-                    ]
-                },
-                love: {
-                    en: [
-                        "Warmth and gentle empathy deepen your close relationships. A heartfelt conversation with your partner or family member dissolves past misunderstandings.",
-                        "Small gestures of care speak louder than grand promises today. Make time for unhurried togetherness and cherish simple, joyful moments.",
-                        "Emotional openness invites deeper trust. If single, a friendly conversation could spark a genuine, soulful connection.",
-                        "Harmony prevails at home when you balance personal space with affectionate presence. Listening with patience brings serene closeness."
-                    ],
-                    hi: [
-                        "अपनों के प्रति स्नेह और सहानुभूति रिश्तों में नई मिठास घोलेगी। जीवनसाथी या परिवार के साथ दिल से की गई बातचीत पुरानी गलतफहमियों को दूर करेगी।",
-                        "आज बड़े वादों से ज़्यादा छोटी-छोटी परवाह और अपनापन असर दिखाएगा। परिवार के साथ शांत और खुशहाल समय बिताएं।",
-                        "भावनात्मक पारदर्शिता से विश्वास गहरा होगा। अविवाहित जातकों के लिए किसी मित्रवत बातचीत से एक सुंदर संबंध की शुरुआत हो सकती है।",
-                        "घर-परिवार में सुखद वातावरण बना रहेगा। धैर्यपूर्वक अपनों की बात सुनने से रिश्तों में आत्मीयता और शांति बढ़ेगी।"
-                    ]
-                },
-                health: {
-                    en: [
-                        "Prioritize hydration, light nourishing meals, and 10 minutes of deep Pranayama. Stepping outdoors in fresh morning or twilight air restores vitality.",
-                        "Your energy remains balanced when you pace yourself evenly. Gentle stretching and reducing screen glare before sleep will refresh your mind.",
-                        "Soothing music, herbal tea, and mindful breathing release accumulated tension. Listen to your body's natural rhythm for rest and renewal.",
-                        "Mental serenity directly boosts physical stamina today. A short evening walk and early rest will leave you rejuvenated tomorrow."
-                    ],
-                    hi: [
-                        "पर्याप्त जल पिएं, हल्का व सात्विक भोजन लें और 10 मिनट प्राणायाम करें। सुबह या संध्या की ताज़ी हवा में टहलने से नई ऊर्जा मिलेगी।",
-                        "दिनचर्या में संतुलन बनाए रखने से शारीरिक ऊर्जा उत्तम रहेगी। हल्का व्यायाम और सोने से पहले स्क्रीन से दूरी मन को शांत रखेगी।",
-                        "सौम्य संगीत, हर्बल चाय और गहरी श्वास तनाव को दूर करेगी। शरीर की आवश्यकता के अनुसार विश्राम को प्राथमिकता दें।",
-                        "मानसिक शांति से आज शारीरिक स्फूर्ति भी बढ़ेगी। शाम की छोटी सैर और समय पर विश्राम आपको तरोताज़ा रखेगा।"
-                    ]
-                },
-                remedy: {
-                    en: [
-                        "Offer water to the rising Sun or light a small ghee lamp at dusk while chanting your Rashi mantra 11 times for peace and clarity.",
-                        "Donate white rice, jaggery, or clean drinking water to someone in need, and begin important tasks facing East.",
-                        "Apply a subtle tilak of sandalwood (Chandan) on your forehead and spend five quiet minutes in gratitude before starting work.",
-                        "Feed birds or cows with grains/green fodder today and recite your Rashi mantra calmly to invite auspicious blessings."
-                    ],
-                    hi: [
-                        "प्रातः सूर्य देव को अर्घ्य दें या संध्या समय घी का दीपक जलाकर शांति और स्पष्टता के लिए अपनी राशि के मंत्र का 11 बार जप करें।",
-                        "किसी ज़रूरतमंद को चावल, गुड़ या स्वच्छ जल का दान करें और महत्वपूर्ण कार्यों की शुरुआत पूर्व दिशा की ओर मुख करके करें।",
-                        "मस्तक पर चंदन का हल्का तिलक लगाएं और कार्य प्रारंभ करने से पहले पांच मिनट शांत मन से ईश्वर का धन्यवाद करें।",
-                        "पक्षियों को दाना या गौमाता को हरा चारा खिलाएं और शांत चित्त से अपने राशि मंत्र का उच्चारण करें।"
-                    ]
-                }
-            };
-
-            const LUCKY_COLORS = [
-                { en: "Saffron Gold", hi: "केसरिया स्वर्ण", hex: "#f59e0b" },
-                { en: "Lotus Rose", hi: "कमल गुलाबी", hex: "#f472b6" },
-                { en: "Emerald Sage", hi: "पन्ना हरा", hex: "#34d399" },
-                { en: "Celestial Indigo", hi: "आकाशी नीला", hex: "#6366f1" },
-                { en: "Pearl White", hi: "मोती श्वेत", hex: "#f8fafc" },
-                { en: "Turmeric Yellow", hi: "हल्दी पीला", hex: "#eab308" },
-                { en: "Sandalwood Cream", hi: "चंदन क्रीम", hex: "#e7d5b8" }
-            ];
-
-            const MUHURATS = [
-                "09:15 AM – 10:45 AM",
-                "10:30 AM – 12:00 PM",
-                "11:45 AM – 01:15 PM",
-                "02:30 PM – 04:00 PM",
-                "04:45 PM – 06:15 PM"
-            ];
-
-            /**
-             * =========================================================================
-             * 4. SIDEREAL VEDIC ASTRONOMY ENGINE (LAHIRI AYANAMSA)
-             * =========================================================================
-             */
-            function norm360(deg) {
-                let r = deg % 360;
-                return r < 0 ? r + 360 : r;
-            }
-
-            function toRad(deg) {
-                return (deg * Math.PI) / 180;
-            }
-
-            function computeVedicChart(dobStr, tobStr, tzHours) {
-                const [y, m, d] = dobStr.split("-").map(Number);
-                const [hh, mm] = (tobStr || "12:00").split(":").map(Number);
-                const tz = typeof tzHours === "number" && !Number.isNaN(tzHours) ? tzHours : 5.5;
-
-                // Convert local civil birth time to UTC Julian Day
-                const utcHours = hh + (mm / 60) - tz;
-                let year = y;
-                let month = m;
-                if (month <= 2) {
-                    year -= 1;
-                    month += 12;
-                }
-                const A = Math.floor(year / 100);
-                const B = 2 - A + Math.floor(A / 4);
-                const jd = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + d + (utcHours / 24) + B - 1524.5;
-
-                // Julian centuries from J2000.0
-                const T = (jd - 2451545.0) / 36525.0;
-
-                // Lahiri Ayanamsa (~23.853° at J2000.0 + precession)
-                const ayanamsa = 23.853056 + 1.396971 * T;
-
-                // Tropical Sun Longitude
-                const L0 = norm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
-                const M = norm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
-                const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(toRad(M))
-                        + (0.019993 - 0.000101 * T) * Math.sin(toRad(2 * M))
-                        + 0.000289 * Math.sin(toRad(3 * M));
-                const sunTropical = norm360(L0 + C);
-                const sunSidereal = norm360(sunTropical - ayanamsa);
-
-                // Tropical Moon Longitude (Meeus primary lunar periodic terms)
-                const Lp = norm360(218.3164477 + 481267.88123421 * T - 0.0015786 * T * T);
-                const D = norm360(297.8501921 + 445267.1114034 * T - 0.0018819 * T * T);
-                const Ms = norm360(357.5291092 + 35999.0502909 * T - 0.0001536 * T * T);
-                const Mm = norm360(134.9633964 + 477198.8675055 * T + 0.0087414 * T * T);
-                const F = norm360(93.2720950 + 483202.0175233 * T - 0.0036539 * T * T);
-
-                const dL = 6.288774 * Math.sin(toRad(Mm))
-                         + 1.274027 * Math.sin(toRad(2 * D - Mm))
-                         + 0.658314 * Math.sin(toRad(2 * D))
-                         + 0.213618 * Math.sin(toRad(2 * Mm))
-                         - 0.185116 * Math.sin(toRad(Ms))
-                         - 0.114332 * Math.sin(toRad(2 * F))
-                         + 0.058793 * Math.sin(toRad(2 * D - 2 * Mm))
-                         + 0.057066 * Math.sin(toRad(2 * D - Ms - Mm))
-                         + 0.053322 * Math.sin(toRad(2 * D + Mm))
-                         + 0.045758 * Math.sin(toRad(2 * D - Ms))
-                         - 0.040923 * Math.sin(toRad(Ms - Mm))
-                         - 0.034720 * Math.sin(toRad(D))
-                         - 0.030383 * Math.sin(toRad(Ms + Mm));
-
-                const moonTropical = norm360(Lp + dL);
-                const moonSidereal = norm360(moonTropical - ayanamsa);
-
-                const moonRashiIndex = Math.floor(moonSidereal / 30) % 12;
-                const sunRashiIndex = Math.floor(sunSidereal / 30) % 12;
-
-                const nakSpan = 360 / 27; // 13.333333°
-                const nakshatraIndex = Math.floor(moonSidereal / nakSpan) % 27;
-                const remInNak = moonSidereal - (nakshatraIndex * nakSpan);
-                const pada = Math.floor(remInNak / (nakSpan / 4)) + 1;
-
-                return {
-                    moonRashiIndex,
-                    sunRashiIndex,
-                    nakshatraIndex,
-                    pada,
-                    moonDeg: (moonSidereal % 30).toFixed(2)
-                };
-            }
-
-            /**
-             * =========================================================================
-             * 5. 36-POINT ASHTAKOOT GUNA MILAN ENGINE
-             * =========================================================================
-             */
-            const NAK_YONI = [
-                "Horse", "Elephant", "Sheep", "Serpent", "Serpent", "Dog",
-                "Cat", "Sheep", "Cat", "Rat", "Rat", "Cow",
-                "Buffalo", "Tiger", "Buffalo", "Tiger", "Deer", "Deer",
-                "Dog", "Monkey", "Mongoose", "Monkey", "Lion", "Horse",
-                "Lion", "Cow", "Elephant"
-            ];
-            const NAK_GANA = [0, 1, 2, 1, 0, 1, 0, 0, 2, 2, 1, 1, 0, 2, 0, 2, 0, 2, 2, 1, 1, 0, 2, 0, 1, 1, 0];
-            const NAK_NADI = [0, 1, 2, 2, 1, 0, 0, 1, 2, 2, 1, 0, 0, 1, 2, 2, 1, 0, 0, 1, 2, 2, 1, 0, 0, 1, 2];
-            const RASHI_VARNA = [1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0];
-            const RASHI_VASHYA = ["Chatushpada", "Chatushpada", "Dwipada", "Jalchar", "Vanachar", "Dwipada", "Dwipada", "Keeta", "Dwipada", "Jalchar", "Dwipada", "Jalchar"];
-            const RASHI_PLANET = [2, 5, 3, 1, 0, 3, 5, 2, 4, 6, 6, 4];
-            const PLANET_FRIENDS = {
-                0: [1, 2, 4], 1: [0, 3], 2: [0, 1, 4], 3: [0, 5],
-                4: [0, 1, 2], 5: [3, 6], 6: [3, 5]
-            };
-
-            function calculateAshtakoot(c1, c2) {
-                const r1 = c1.moonRashiIndex;
-                const r2 = c2.moonRashiIndex;
-                const n1 = c1.nakshatraIndex;
-                const n2 = c2.nakshatraIndex;
-
-                // 1. Varna (1)
-                const varna = RASHI_VARNA[r1] <= RASHI_VARNA[r2] ? 1 : 0;
-
-                // 2. Vashya (2)
-                const va1 = RASHI_VASHYA[r1], va2 = RASHI_VASHYA[r2];
-                const vashya = (r1 === r2 || va1 === va2) ? 2
-                    : ((va1 === "Dwipada" && va2 === "Chatushpada") || (va1 === "Chatushpada" && va2 === "Dwipada")) ? 1 : 0.5;
-
-                // 3. Tara (3)
-                const t12 = (((n2 - n1 + 27) % 27) % 9) + 1;
-                const t21 = (((n1 - n2 + 27) % 27) % 9) + 1;
-                const ok12 = ![3, 5, 7].includes(t12);
-                const ok21 = ![3, 5, 7].includes(t21);
-                const tara = (ok12 && ok21) ? 3 : (ok12 || ok21) ? 1.5 : 0;
-
-                // 4. Yoni (4)
-                const y1 = NAK_YONI[n1], y2 = NAK_YONI[n2];
-                const enemies = [["Dog", "Deer"], ["Serpent", "Mongoose"], ["Cat", "Rat"], ["Cow", "Tiger"], ["Horse", "Buffalo"]];
-                const isEnemy = enemies.some(([a, b]) => (y1 === a && y2 === b) || (y1 === b && y2 === a));
-                const yoni = y1 === y2 ? 4 : isEnemy ? 0 : 3;
-
-                // 5. Graha Maitri (5)
-                const p1 = RASHI_PLANET[r1], p2 = RASHI_PLANET[r2];
-                const f12 = p1 === p2 || PLANET_FRIENDS[p1].includes(p2);
-                const f21 = p1 === p2 || PLANET_FRIENDS[p2].includes(p1);
-                const maitri = (p1 === p2 || (f12 && f21)) ? 5 : (f12 || f21) ? 4 : 1;
-
-                // 6. Gana (6)
-                const g1 = NAK_GANA[n1], g2 = NAK_GANA[n2];
-                const gana = g1 === g2 ? 6 : ((g1 === 0 && g2 === 1) || (g1 === 1 && g2 === 0)) ? 5 : (g1 === 1 && g2 === 2) ? 1 : 0;
-
-                // 7. Bhakoot (7)
-                const d12 = ((r2 - r1 + 12) % 12) + 1;
-                const d21 = ((r1 - r2 + 12) % 12) + 1;
-                const doshaSteps = [2, 5, 6, 8, 9, 12];
-                const bhakoot = (r1 === r2 || (!doshaSteps.includes(d12) && !doshaSteps.includes(d21))) ? 7 : 0;
-
-                // 8. Nadi (8)
-                const nadi = NAK_NADI[n1] !== NAK_NADI[n2] ? 8 : 0;
-
-                const koots = [
-                    { max: 1, score: varna, en: "Varna (Spiritual Alignment)", hi: "वर्ण (आध्यात्मिक प्रवृत्ति)", dEn: varna >= 1 ? "Aligned core values and inner ideals." : "Distinct spiritual outlook; mutual respect creates harmony.", dHi: varna >= 1 ? "आंतरिक मूल्यों और आदर्शों में सुंदर तालमेल।" : "प्रवृत्ति में भिन्नता; आपसी सम्मान से संतुलन बनता है।" },
-                    { max: 2, score: vashya, en: "Vashya (Mutual Attraction)", hi: "वश्य (आपसी आकर्षण व सामंजस्य)", dEn: vashya >= 1.5 ? "Natural warmth, affection & effortless rapport." : "Moderate mutual pull; open communication strengthens ease.", dHi: vashya >= 1.5 ? "स्वाभाविक स्नेह और सहज तालमेल।" : "मध्यम आकर्षण; खुले संवाद से आत्मीयता बढ़ती है।" },
-                    { max: 3, score: tara, en: "Tara (Destiny & Fortune)", hi: "तारा (भाग्य और शुभता)", dEn: tara >= 2 ? "Supportive Nakshatra rhythm for shared milestones." : "Mixed star cycle; patience brings steady progress.", dHi: tara >= 2 ? "संयुक्त प्रगति और शुभ कार्यों के लिए अनुकूल नक्षत्र।" : "मिश्रित तारा स्थिति; धैर्य से अच्छे परिणाम मिलेंगे।" },
-                    { max: 4, score: yoni, en: "Yoni (Instinct & Comfort)", hi: "योनि (स्वाभाविक सहजता)", dEn: yoni >= 3 ? "Comfortable closeness and intuitive understanding." : "Contrasting instincts; gentle empathy bridges differences.", dHi: yoni >= 3 ? "स्वाभाविक निकटता और सहज समझ।" : "विपरीत स्वभाव; संवेदनशीलता से तालमेल बनता है।" },
-                    { max: 5, score: maitri, en: "Graha Maitri (Mental Bond)", hi: "ग्रह मैत्री (मानसिक मित्रता)", dEn: maitri >= 4 ? "Friendly wavelength and clear intellectual rapport." : "Different planetary moods; active listening helps.", dHi: maitri >= 4 ? "विचारों का मेल और स्वाभाविक मानसिक मित्रता।" : "ग्रह स्वामियों की प्रकृति भिन्न; धैर्य से संवाद करें।" },
-                    { max: 6, score: gana, en: "Gana (Temperament)", hi: "गण (स्वभाव और व्यवहार)", dEn: gana >= 5 ? "Harmonious daily temperament and emotional pace." : "Different emotional tempos; respect personal space.", dHi: gana >= 5 ? "स्वभाव और दैनिक व्यवहार में अच्छा सामंजस्य।" : "भावनात्मक लय में अंतर; एक-दूसरे को स्थान दें।" },
-                    { max: 7, score: bhakoot, en: "Bhakoot (Emotional Growth)", hi: "भकूट (भावनात्मक जुड़ाव व प्रगति)", dEn: bhakoot > 0 ? "Deep emotional fulfillment and shared prosperity." : "Bhakoot sensitivity; calm dialogue keeps peace.", dHi: bhakoot > 0 ? "मजबूत भावनात्मक जुड़ाव और पारिवारिक समृद्धि।" : "भकूट संवेदनशीलता; शांत संवाद से मधुरता बनी रहेगी।" },
-                    { max: 8, score: nadi, en: "Nadi (Vitality & Energy)", hi: "नाड़ी (ऊर्जा और स्वास्थ्य संतुलन)", dEn: nadi > 0 ? "Complementary vitality and balanced life energy." : "Same Nadi noted; mindful wellness care recommended.", dHi: nadi > 0 ? "पूरक जीवन ऊर्जा और उत्तम स्वास्थ्य संतुलन।" : "समान नाड़ी; स्वास्थ्य और पारंपरिक उपाय पर ध्यान दें।" }
-                ];
-
-                const total = koots.reduce((s, k) => s + k.score, 0);
-                return {
-                    koots,
-                    total,
-                    totalText: Number.isInteger(total) ? String(total) : total.toFixed(1),
-                    pct: Math.round((total / 36) * 100),
-                    nadiOk: nadi > 0,
-                    bhakootOk: bhakoot > 0
-                };
-            }
-
-            /**
-             * =========================================================================
-             * 6. LOCALIZATION DICTIONARY & APP STATE
-             * =========================================================================
-             */
-            const I18N = {
-                en: {
-                    tagline: "Vedic Rashifal & Kundli Milan",
-                    tabRashifal: "Daily Rashifal",
-                    tabMilan: "Kundli Milan",
-                    heroTitle: "Discover Your Vedic Chandra Rashi",
-                    heroSubtitle: "Enter your birth details to compute your sidereal Moon Sign (Lahiri Ayanamsa), Nakshatra, and soothing daily guidance.",
-                    labelName: "Full Name (Optional)",
-                    labelDob: "Date of Birth *",
-                    labelTob: "Time of Birth *",
-                    labelPob: "Place of Birth *",
-                    quickCities: "Popular:",
-                    saveProfile: "Save birth details on this device",
-                    getRashifalBtn: "Get Daily Rashifal",
-                    browseDirect: "Or Tap Any Chandra Rashi to Read Today's Rashifal",
-                    switchRashi: "Switch Chandra Rashi",
-                    myBirthRashi: "My Birth Rashi",
-                    editDetails: "Edit Birth Details",
-                    lord: "Lord:",
-                    element: "Element:",
-                    panchang: "Panchang:",
-                    kundliSummary: "Janma Kundli Summary",
-                    chandraRashi: "Chandra Rashi:",
-                    nakshatra: "Nakshatra & Pada:",
-                    suryaRashi: "Surya Rashi:",
-                    luckyColor: "Lucky Color",
-                    luckyNumber: "Lucky Number",
-                    shubhMuhurat: "Shubh Muhurat",
-                    cosmicHarmony: "Cosmic Harmony",
-                    cardOverview: "Overall Energy (आज का सार)",
-                    cardCareer: "Career & Finance",
-                    cardLove: "Love & Relationships",
-                    cardHealth: "Health & Peace",
-                    cardMantra: "Sacred Mantra & Upay",
-                    clearSaved: "Clear Saved",
-                    shareRashifal: "Copy Rashifal for WhatsApp / Instagram",
-                    milanTag: "Vedic Ashtakoot Guna Milan • 36 Points",
-                    milanHeading: "Kundli Milan & Soul Connection",
-                    milanSub: "Compare birth charts of two individuals to discover their Chandra Rashi harmony, 36-point Ashtakoot Guna score, emotional bond, and relationship insights.",
-                    trySampleCouple: "Try Sample Couple",
-                    swapPersons: "Swap Person 1 & 2",
-                    person1Title: "Person 1 (पहला व्यक्ति)",
-                    person2Title: "Person 2 (दूसरा व्यक्ति)",
-                    fillMyDetails: "Use My Details",
-                    partnerTag: "Partner / Match",
-                    checkMilanBtn: "Calculate Kundli Milan (36 Gunas)",
-                    gunasWord: "Gunas",
-                    ashtakootHeading: "Ashtakoot Breakdown (8 Compatibility Factors)",
-                    connEmotional: "Emotional & Heart Bond",
-                    connMental: "Mental & Communication",
-                    connSpiritual: "Spiritual & Life Growth",
-                    milanNote: "Calculated using Sidereal Chandra Rashi & Nakshatra (Lahiri Ayanamsa) traditional Ashtakoot principles.",
-                    shareMilan: "Copy Match Report",
-                    installApp: "Install App",
-                    footerSub: "Sidereal Lahiri Ayanamsa Calculations • Installable Progressive Web App",
-                    pwaModalTitle: "Install Jyotish Darshan App",
-                    pwaModalIntro: "Add Jyotish Darshan to your phone's Home Screen for instant one-tap access to Daily Rashifal and Kundli Milan—just like a native app:",
-                    pwaAndroidTitle: "Android (Chrome / Edge)",
-                    pwaAndroidSteps: "Tap the top-right menu (⋮) → select \"Add to Home screen\" or \"Install app\".",
-                    pwaIosTitle: "iPhone / iPad (Safari)",
-                    pwaIosSteps: "Tap the Share icon (↑) at the bottom → scroll down and tap \"Add to Home Screen\".",
-                    pwaGotIt: "Got It"
-                },
-                hi: {
-                    tagline: "दैनिक राशिफल और कुंडली मिलान",
-                    tabRashifal: "दैनिक राशिफल",
-                    tabMilan: "कुंडली मिलान",
-                    heroTitle: "अपनी वैदिक चंद्र राशि जानें",
-                    heroSubtitle: "लाहड़ी अयनांश के आधार पर अपनी सटीक चंद्र राशि, नक्षत्र और आज का शांत व शुभ दैनिक मार्गदर्शन जानने के लिए जन्म विवरण भरें।",
-                    labelName: "पूरा नाम (वैकल्पिक)",
-                    labelDob: "जन्म तिथि *",
-                    labelTob: "जन्म समय *",
-                    labelPob: "जन्म स्थान *",
-                    quickCities: "प्रमुख शहर:",
-                    saveProfile: "इस डिवाइस पर जन्म विवरण सहेजें",
-                    getRashifalBtn: "दैनिक राशिफल देखें",
-                    browseDirect: "या सीधे किसी भी चंद्र राशि पर टैप करके आज का राशिफल पढ़ें",
-                    switchRashi: "चंद्र राशि बदलें",
-                    myBirthRashi: "मेरी जन्म राशि",
-                    editDetails: "जन्म विवरण बदलें",
-                    lord: "स्वामी ग्रह:",
-                    element: "तत्व:",
-                    panchang: "पंचांग:",
-                    kundliSummary: "जन्म कुंडली सारांश",
-                    chandraRashi: "चंद्र राशि:",
-                    nakshatra: "नक्षत्र व चरण:",
-                    suryaRashi: "सूर्य राशि:",
-                    luckyColor: "शुभ रंग",
-                    luckyNumber: "शुभ अंक",
-                    shubhMuhurat: "शुभ मुहूर्त",
-                    cosmicHarmony: "ग्रह अनुकूलता",
-                    cardOverview: "आज का सार (Overall Energy)",
-                    cardCareer: "करियर और धन",
-                    cardLove: "प्रेम और संबंध",
-                    cardHealth: "स्वास्थ्य और मन की शांति",
-                    cardMantra: "पवित्र मंत्र और उपाय",
-                    clearSaved: "सहेजा डेटा हटाएं",
-                    shareRashifal: "WhatsApp / Instagram के लिए कॉपी करें",
-                    milanTag: "वैदिक अष्टकूट गुण मिलान • 36 अंक",
-                    milanHeading: "कुंडली मिलान और आत्मिक जुड़ाव",
-                    milanSub: "दो व्यक्तियों की जन्म कुंडली का मिलान करके उनकी चंद्र राशि अनुकूलता, 36 अष्टकूट गुण स्कोर और आपसी संबंध की गहराई जानें।",
-                    trySampleCouple: "उदाहरण जोड़ी देखें",
-                    swapPersons: "व्यक्ति 1 और 2 बदलें",
-                    person1Title: "पहला व्यक्ति (Person 1)",
-                    person2Title: "दूसरा व्यक्ति (Person 2)",
-                    fillMyDetails: "मेरा विवरण भरें",
-                    partnerTag: "साथी / मिलान",
-                    checkMilanBtn: "कुंडली मिलान देखें (36 गुण)",
-                    gunasWord: "गुण",
-                    ashtakootHeading: "अष्टकूट विवरण (8 मिलान कारक)",
-                    connEmotional: "भावनात्मक और हृदय का जुड़ाव",
-                    connMental: "मानसिक तालमेल और संवाद",
-                    connSpiritual: "आध्यात्मिक और जीवन प्रगति",
-                    milanNote: "यह गणना लाहड़ी अयनांश आधारित चंद्र राशि और नक्षत्र के पारंपरिक अष्टकूट नियमों पर आधारित है।",
-                    shareMilan: "मिलान रिपोर्ट कॉपी करें",
-                    installApp: "ऐप इंस्टॉल करें",
-                    footerSub: "लाहड़ी अयनांश आधारित गणना • होम स्क्रीन पर इंस्टॉल योग्य वेब ऐप",
-                    pwaModalTitle: "Jyotish Darshan ऐप इंस्टॉल करें",
-                    pwaModalIntro: "दैनिक राशिफल और कुंडली मिलान को एक टैप में खोलने के लिए इसे अपने फ़ोन की होम स्क्रीन पर जोड़ें:",
-                    pwaAndroidTitle: "Android (Chrome / Edge)",
-                    pwaAndroidSteps: "ऊपर दाईं ओर मेनू (⋮) दबाएं → \"Add to Home screen\" या \"Install app\" चुनें।",
-                    pwaIosTitle: "iPhone / iPad (Safari)",
-                    pwaIosSteps: "नीचे Share आइकन (↑) दबाएं → नीचे स्क्रॉल करके \"Add to Home Screen\" चुनें।",
-                    pwaGotIt: "समझ गया"
-                }
-            };
-
-            const STATE = {
-                lang: "en",
-                activeTab: "rashifal",
-                activeRashi: 0,
-                birthChart: null,
-                profile: null,
-                milanData: null
-            };
-
-            /**
-             * =========================================================================
-             * 7. HELPER UTILITIES (CITY LOOKUP, TOAST, CLIPBOARD, DATE)
-             * =========================================================================
-             */
-            function findCityInfo(queryText) {
-                if (!queryText) return { name: "New Delhi, Delhi", tz: 5.5 };
-                const q = queryText.trim().toLowerCase();
-                const exact = CITIES.find(c => c.name.toLowerCase() === q);
-                if (exact) return exact;
-                const partial = CITIES.find(c => c.name.toLowerCase().includes(q) || q.includes(c.name.split(",")[0].toLowerCase()));
-                if (partial) return { name: queryText.trim(), tz: partial.tz };
-                return { name: queryText.trim(), tz: 5.5 };
-            }
-
-            function bindCityAutocomplete(inputId, listId, onSelect) {
-                const input = document.getElementById(inputId);
-                const list = document.getElementById(listId);
-                if (!input || !list) return;
-
-                function renderMatches() {
-                    const q = input.value.trim().toLowerCase();
-                    const matches = q
-                        ? CITIES.filter(c => c.name.toLowerCase().includes(q)).slice(0, 10)
-                        : CITIES.slice(0, 8);
-
-                    if (matches.length === 0) {
-                        list.innerHTML = `<li class="px-4 py-2.5 text-xs text-amber-200/80">Using custom location "${input.value.trim()}" (IST UTC+5:30)</li>`;
-                    } else {
-                        list.innerHTML = matches.map(c => {
-                            const sign = c.tz >= 0 ? "+" : "";
-                            return `<li data-city-name="${c.name}" data-city-tz="${c.tz}" class="px-4 py-2.5 hover:bg-dusk-800 cursor-pointer flex items-center justify-between text-xs sm:text-sm text-slate-100 transition-colors">
-                                <span>${c.name}</span>
-                                <span class="text-[11px] text-amber-300/80">UTC${sign}${c.tz}</span>
-                            </li>`;
-                        }).join("");
-                    }
-                    list.classList.remove("hidden");
-                }
-
-                input.addEventListener("input", renderMatches);
-                input.addEventListener("focus", renderMatches);
-
-                list.addEventListener("click", (e) => {
-                    const li = e.target.closest("li[data-city-name]");
-                    if (li) {
-                        const name = li.getAttribute("data-city-name");
-                        const tz = parseFloat(li.getAttribute("data-city-tz"));
-                        input.value = name;
-                        list.classList.add("hidden");
-                        if (onSelect) onSelect({ name, tz });
-                    } else {
-                        list.classList.add("hidden");
-                    }
-                });
-
-                document.addEventListener("click", (e) => {
-                    if (!input.contains(e.target) && !list.contains(e.target)) {
-                        list.classList.add("hidden");
-                    }
-                });
-            }
-
-            let bannerTimeout = null;
-            function showBanner(msg) {
-                const el = document.getElementById("status-banner");
-                const txt = document.getElementById("status-banner-text");
-                if (!el || !txt) return;
-                txt.textContent = msg;
-                el.classList.remove("hidden");
-                if (bannerTimeout) clearTimeout(bannerTimeout);
-                bannerTimeout = setTimeout(() => el.classList.add("hidden"), 4000);
-            }
-
-            function copyTextSafely(text, successMsg) {
-                const ta = document.createElement("textarea");
-                ta.value = text;
-                ta.style.position = "fixed";
-                ta.style.left = "-9999px";
-                document.body.appendChild(ta);
-                ta.select();
-                try {
-                    document.execCommand("copy");
-                    showBanner(successMsg);
-                } catch (err) {
-                    showBanner(STATE.lang === "hi" ? "कॉपी नहीं हो सका।" : "Could not copy automatically.");
-                }
-                document.body.removeChild(ta);
-            }
-
-            function getFormattedToday() {
-                const now = new Date();
-                const locale = STATE.lang === "hi" ? "hi-IN" : "en-US";
-                return now.toLocaleDateString(locale, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-            }
-
-            function getDailyPanchangLabel() {
-                const tithisEn = ["Shukla Pratipada", "Shukla Dwitiya", "Shukla Tritiya", "Shukla Chaturthi", "Shukla Panchami", "Shukla Shashthi", "Shukla Saptami", "Shukla Ashtami", "Shukla Navami", "Shukla Dashami", "Shukla Ekadashi", "Shukla Dwadashi", "Shukla Trayodashi", "Shukla Chaturdashi", "Purnima"];
-                const tithisHi = ["शुक्ल प्रतिपदा", "शुक्ल द्वितीया", "शुक्ल तृतीया", "शुक्ल चतुर्थी", "शुक्ल पंचमी", "शुक्ल षष्ठी", "शुक्ल सप्तमी", "शुक्ल अष्टमी", "शुक्ल नवमी", "शुक्ल दशमी", "शुक्ल एकादशी", "शुक्ल द्वादशी", "शुक्ल त्रयोदशी", "शुक्ल चतुर्दशी", "पूर्णिमा"];
-                const idx = new Date().getDate() % tithisEn.length;
-                return STATE.lang === "hi" ? tithisHi[idx] : tithisEn[idx];
-            }
-
-            /**
-             * =========================================================================
-             * 8. RENDERING: DIRECT RASHI GRID, DASHBOARD & KUNDLI MILAN
-             * =========================================================================
-             */
-            function renderDirectRashiGrid() {
-                const grid = document.getElementById("direct-rashi-grid");
-                if (!grid) return;
-                grid.innerHTML = RASHIS.map(r => {
-                    const label = STATE.lang === "hi" ? r.hi : r.en;
-                    const sub = STATE.lang === "hi" ? r.en : r.hi;
-                    return `<button type="button" data-rashi-id="${r.id}"
-                        class="direct-rashi-item celestial-card rounded-2xl p-3 text-center hover:border-amber-300/60 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1">
-                        <span class="text-2xl text-amber-300">${r.glyph}</span>
-                        <span class="text-xs font-bold text-white">${label}</span>
-                        <span class="text-[10px] text-slate-400">${sub}</span>
-                    </button>`;
-                }).join("");
-            }
-
-            function renderDashRashiStrip() {
-                const strip = document.getElementById("dash-rashi-strip");
-                if (!strip) return;
-                strip.innerHTML = RASHIS.map(r => {
-                    const isActive = r.id === STATE.activeRashi;
-                    const isBirth = STATE.birthChart && r.id === STATE.birthChart.moonRashiIndex;
-                    const label = STATE.lang === "hi" ? r.hi : r.en;
-                    return `<button type="button" data-strip-rashi="${r.id}"
-                        class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border ${
-                            isActive
-                                ? "bg-gradient-to-r from-amber-300 to-amber-500 text-dusk-950 border-amber-300 shadow"
-                                : "bg-dusk-950/80 text-slate-300 border-amber-400/20 hover:border-amber-300/50 hover:text-white"
-                        }">
-                        <span>${r.glyph}</span>
-                        <span>${label}</span>
-                        ${isBirth ? '<span title="Your Birth Rashi">★</span>' : ""}
-                    </button>`;
-                }).join("");
-            }
-
-            function getDailyPredictionsForRashi(rashiId) {
-                const now = new Date();
-                const daySeed = now.getFullYear() * 366 + (now.getMonth() + 1) * 31 + now.getDate() + rashiId * 7;
-                const lang = STATE.lang;
-                const pick = (arr, off) => arr[(daySeed + off) % arr.length];
-
-                const colorObj = pick(LUCKY_COLORS, 1);
-                const n1 = ((daySeed + rashiId) % 9) + 1;
-                const n2 = ((daySeed * 3 + rashiId + 5) % 81) + 10;
-                const muhurat = pick(MUHURATS, 3);
-                const harmony = 78 + ((daySeed + rashiId * 5) % 20);
-
-                return {
-                    overview: pick(DAILY_BANK.overview[lang], 0),
-                    career: pick(DAILY_BANK.career[lang], 1),
-                    love: pick(DAILY_BANK.love[lang], 2),
-                    health: pick(DAILY_BANK.health[lang], 3),
-                    remedy: pick(DAILY_BANK.remedy[lang], 4),
-                    colorName: lang === "hi" ? colorObj.hi : colorObj.en,
-                    colorHex: colorObj.hex,
-                    numbers: `${n1}, ${n2}`,
-                    muhurat,
-                    harmony
-                };
-            }
-
-            function renderRashifalDashboard() {
-                const rashi = RASHIS[STATE.activeRashi];
-                const lang = STATE.lang;
-                const daily = getDailyPredictionsForRashi(rashi.id);
-
-                renderDashRashiStrip();
-
-                const backBtn = document.getElementById("btn-back-birth-rashi");
-                if (STATE.birthChart && STATE.activeRashi !== STATE.birthChart.moonRashiIndex) {
-                    backBtn.classList.remove("hidden");
-                } else {
-                    backBtn.classList.add("hidden");
-                }
-
-                document.getElementById("dash-bg-glyph").textContent = rashi.glyph;
-                document.getElementById("dash-rashi-glyph").textContent = rashi.glyph;
-                document.getElementById("dash-rashi-num").textContent = lang === "hi" ? `राशि ${rashi.id + 1}` : `RASHI ${rashi.id + 1}`;
-                document.getElementById("dash-today-pill").textContent = getFormattedToday();
-
-                const greetEl = document.getElementById("dash-greeting-pill");
-                if (STATE.profile && STATE.profile.name) {
-                    greetEl.textContent = lang === "hi" ? `• नमस्ते, ${STATE.profile.name}` : `• Namaste, ${STATE.profile.name}`;
-                } else {
-                    greetEl.textContent = "";
-                }
-
-                if (lang === "hi") {
-                    document.getElementById("dash-rashi-title").textContent = `${rashi.hi} राशि`;
-                    document.getElementById("dash-rashi-sub").textContent = `(${rashi.en} / ${rashi.western})`;
-                    document.getElementById("dash-lord-val").textContent = rashi.lordHi;
-                    document.getElementById("dash-element-val").textContent = rashi.elHi;
-                } else {
-                    document.getElementById("dash-rashi-title").textContent = `${rashi.en} (${rashi.western})`;
-                    document.getElementById("dash-rashi-sub").textContent = `${rashi.hi} राशि`;
-                    document.getElementById("dash-lord-val").textContent = rashi.lordEn;
-                    document.getElementById("dash-element-val").textContent = rashi.elEn;
-                }
-                document.getElementById("dash-panchang-val").textContent = getDailyPanchangLabel();
-
-                // Kundli Summary Box
-                const kundliBox = document.getElementById("dash-kundli-box");
-                if (STATE.birthChart && STATE.profile) {
-                    kundliBox.classList.remove("hidden");
-                    const mR = RASHIS[STATE.birthChart.moonRashiIndex];
-                    const sR = RASHIS[STATE.birthChart.sunRashiIndex];
-                    const nak = NAKSHATRAS[STATE.birthChart.nakshatraIndex];
-                    document.getElementById("kundli-moon-val").textContent = lang === "hi" ? `${mR.hi} (${mR.en})` : `${mR.en} (${mR.hi})`;
-                    document.getElementById("kundli-nakshatra-val").textContent = lang === "hi" ? `${nak.hi} (चरण ${STATE.birthChart.pada})` : `${nak.en} (Pada ${STATE.birthChart.pada})`;
-                    document.getElementById("kundli-sun-val").textContent = lang === "hi" ? `${sR.hi} (${sR.en})` : sR.en;
-                    document.getElementById("kundli-place-meta").textContent = `${STATE.profile.city} • ${STATE.birthChart.moonDeg}°`;
-                } else {
-                    kundliBox.classList.add("hidden");
-                }
-
-                // Lucky Cards
-                document.getElementById("dash-color-val").textContent = daily.colorName;
-                document.getElementById("dash-color-dot").style.backgroundColor = daily.colorHex;
-                document.getElementById("dash-number-val").textContent = daily.numbers;
-                document.getElementById("dash-muhurat-val").textContent = daily.muhurat;
-                document.getElementById("dash-harmony-val").textContent = `${daily.harmony}%`;
-                document.getElementById("dash-harmony-bar").style.width = `${daily.harmony}%`;
-
-                // Predictions & Mantra
-                document.getElementById("text-overview").textContent = daily.overview;
-                document.getElementById("text-career").textContent = daily.career;
-                document.getElementById("text-love").textContent = daily.love;
-                document.getElementById("text-health").textContent = daily.health;
-                document.getElementById("text-remedy").textContent = daily.remedy;
-                document.getElementById("text-mantra").textContent = rashi.mantra;
-                document.getElementById("text-mantra-meaning").textContent = lang === "hi" ? rashi.meaningHi : rashi.meaningEn;
-
-                // Show Clear Saved button if stored
-                const clearBtn = document.getElementById("btn-clear-profile");
-                try {
-                    if (localStorage.getItem("jyotish_darshan_v2")) {
-                        clearBtn.classList.remove("hidden");
-                    } else {
-                        clearBtn.classList.add("hidden");
-                    }
-                } catch (e) {}
-            }
-
-            function renderMilanResults() {
-                if (!STATE.milanData) return;
-                const { p1, p2, match } = STATE.milanData;
-                const lang = STATE.lang;
-
-                const n1Label = p1.name || (lang === "hi" ? "पहला व्यक्ति" : "Person 1");
-                const n2Label = p2.name || (lang === "hi" ? "दूसरा व्यक्ति" : "Person 2");
-                const r1 = RASHIS[p1.chart.moonRashiIndex];
-                const r2 = RASHIS[p2.chart.moonRashiIndex];
-                const nak1 = NAKSHATRAS[p1.chart.nakshatraIndex];
-                const nak2 = NAKSHATRAS[p2.chart.nakshatraIndex];
-
-                // Animate SVG Circular Gauge (circumference = 314.16)
-                const ring = document.getElementById("milan-gauge-ring");
-                const offset = 314.16 * (1 - match.total / 36);
-                ring.style.strokeDashoffset = offset.toFixed(2);
-
-                document.getElementById("milan-score-big").textContent = match.totalText;
-                document.getElementById("milan-pct-pill").textContent = `${match.pct}%`;
-                document.getElementById("milan-names-heading").textContent = `${n1Label} 💞 ${n2Label}`;
-
-                const verdictTag = document.getElementById("milan-verdict-tag");
-                const doshaTag = document.getElementById("milan-dosha-tag");
-                let summaryText = "";
-
-                if (match.total >= 25) {
-                    verdictTag.textContent = lang === "hi" ? "उत्तम मिलान • श्रेष्ठ संबंध" : "Uttam Milan • Auspicious Match";
-                    verdictTag.className = "px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-400/20 text-emerald-200 border border-emerald-400/40";
-                    summaryText = lang === "hi"
-                        ? `${n1Label} और ${n2Label} के बीच ${match.totalText}/36 गुण मिल रहे हैं। यह श्रेष्ठ आध्यात्मिक, भावनात्मक और पारिवारिक सामंजस्य का शुभ संकेत है।`
-                        : `${n1Label} and ${n2Label} score ${match.totalText}/36 Gunas—a deeply auspicious alignment signaling natural warmth, mutual respect, and long-term harmony.`;
-                } else if (match.total >= 18) {
-                    verdictTag.textContent = lang === "hi" ? "संतुलित व अनुकूल मिलान" : "Madhyam Milan • Balanced Match";
-                    verdictTag.className = "px-3.5 py-1 rounded-full text-xs font-bold bg-amber-400/20 text-amber-200 border border-amber-300/40";
-                    summaryText = lang === "hi"
-                        ? `${n1Label} और ${n2Label} का गुण मिलान ${match.totalText}/36 है, जो एक संतुलित, स्नेहपूर्ण और प्रगतिशील संबंध का मजबूत आधार दर्शाता है।`
-                        : `${n1Label} and ${n2Label} achieve ${match.totalText}/36 Gunas, meeting the traditional benchmark for a balanced, supportive, and adaptable partnership.`;
-                } else {
-                    verdictTag.textContent = lang === "hi" ? "धैर्य व संवाद से शुभता" : "Needs Mindful Understanding";
-                    verdictTag.className = "px-3.5 py-1 rounded-full text-xs font-bold bg-rose-400/20 text-rose-200 border border-rose-400/40";
-                    summaryText = lang === "hi"
-                        ? `${n1Label} और ${n2Label} का गुण स्कोर ${match.totalText}/36 है। स्वभाव में कुछ भिन्नताएं हो सकती हैं, जिन्हें खुले संवाद और आपसी सम्मान से मधुर बनाया जा सकता है।`
-                        : `${n1Label} and ${n2Label} score ${match.totalText}/36 Gunas, highlighting distinct lunar temperaments that flourish through empathy, patience, and clear communication.`;
-                }
-
-                doshaTag.textContent = match.nadiOk && match.bhakootOk
-                    ? (lang === "hi" ? "नाड़ी व भकूट अनुकूल" : "Nadi & Bhakoot Harmonious")
-                    : !match.nadiOk
-                        ? (lang === "hi" ? "समान नाड़ी ध्यान योग्य" : "Same Nadi Noted")
-                        : (lang === "hi" ? "भकूट संवाद ध्यान योग्य" : "Bhakoot Care Advised");
-
-                document.getElementById("milan-summary-text").textContent = summaryText;
-
-                // Person 1 & Person 2 Summary Cards
-                document.getElementById("res-p1-name").textContent = n1Label;
-                document.getElementById("res-p1-rashi").textContent = lang === "hi" ? `${r1.glyph} ${r1.hi} (${r1.en})` : `${r1.glyph} ${r1.en} (${r1.western})`;
-                document.getElementById("res-p1-nak").textContent = lang === "hi" ? `नक्षत्र: ${nak1.hi} (चरण ${p1.chart.pada})` : `Nakshatra: ${nak1.en} (Pada ${p1.chart.pada})`;
-                document.getElementById("res-p1-meta").textContent = lang === "hi" ? `स्वामी: ${r1.lordHi} • ${r1.elHi}` : `Lord: ${r1.lordEn} • ${r1.elEn}`;
-
-                document.getElementById("res-p2-name").textContent = n2Label;
-                document.getElementById("res-p2-rashi").textContent = lang === "hi" ? `${r2.glyph} ${r2.hi} (${r2.en})` : `${r2.glyph} ${r2.en} (${r2.western})`;
-                document.getElementById("res-p2-nak").textContent = lang === "hi" ? `नक्षत्र: ${nak2.hi} (चरण ${p2.chart.pada})` : `Nakshatra: ${nak2.en} (Pada ${p2.chart.pada})`;
-                document.getElementById("res-p2-meta").textContent = lang === "hi" ? `स्वामी: ${r2.lordHi} • ${r2.elHi}` : `Lord: ${r2.lordEn} • ${r2.elEn}`;
-
-                // 8 Koots Grid
-                const container = document.getElementById("milan-koots-container");
-                container.innerHTML = match.koots.map(k => {
-                    const ratio = k.score / k.max;
-                    const badgeClass = ratio >= 0.7 ? "text-emerald-300 bg-emerald-400/15 border-emerald-400/30"
-                        : ratio >= 0.4 ? "text-amber-300 bg-amber-400/15 border-amber-400/30"
-                        : "text-rose-300 bg-rose-400/15 border-rose-400/30";
-                    const scoreStr = Number.isInteger(k.score) ? k.score : k.score.toFixed(1);
-                    return `<div class="p-4 rounded-2xl bg-dusk-950/80 border border-amber-400/15 flex flex-col justify-between gap-2">
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-xs sm:text-sm font-bold text-white">${lang === "hi" ? k.hi : k.en}</span>
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border shrink-0 ${badgeClass}">${scoreStr} / ${k.max}</span>
-                        </div>
-                        <p class="text-xs text-slate-300 leading-relaxed">${lang === "hi" ? k.dHi : k.dEn}</p>
-                    </div>`;
-                }).join("");
-
-                // 3 Connection Pillars
-                const bhakootKoot = match.koots[6];
-                const maitriKoot = match.koots[4];
-                const nadiKoot = match.koots[7];
-
-                document.getElementById("milan-emotional-text").textContent = lang === "hi"
-                    ? (bhakootKoot.score > 0 ? "चंद्र राशियों के बीच मधुर भावनात्मक प्रवाह बना रहता है; दोनों एक-दूसरे की अनकही भावनाओं को सहजता से समझते हैं।" : "भावनात्मक अपेक्षाओं को स्पष्ट रूप से साझा करने से आपसी विश्वास और प्रेम निरंतर मजबूत होता है।")
-                    : (bhakootKoot.score > 0 ? "Lunar positions foster tender emotional resonance, helping both partners feel heard, supported, and appreciated." : "Sharing feelings openly and gently turns emotional differences into deeper mutual empathy.");
-
-                document.getElementById("milan-mental-text").textContent = lang === "hi"
-                    ? (maitriKoot.score >= 4 ? "राशि स्वामियों की मित्रता विचारों में स्पष्टता, रचनात्मक संवाद और साझा निर्णयों में सहजता लाती है।" : "अलग दृष्टिकोण होने से नए विचार मिलते हैं; शांत मन से एक-दूसरे की बात सुनना संबंध को सशक्त बनाता है।")
-                    : (maitriKoot.score >= 4 ? "Friendly Rashi lords encourage lively conversation, shared humor, and aligned day-to-day decision making." : "Complementary perspectives enrich problem-solving when paired with patient, active listening.");
-
-                document.getElementById("milan-spiritual-text").textContent = lang === "hi"
-                    ? (nadiKoot.score > 0 ? "भिन्न नाड़ी ऊर्जा जीवन में संतुलन, उत्तम स्वास्थ्य और पारिवारिक समृद्धि को प्रोत्साहित करती है।" : "साथ मिलकर ध्यान, कृतज्ञता और सकारात्मक दिनचर्या अपनाने से जीवन ऊर्जा और सामंजस्य बढ़ता है।")
-                    : (nadiKoot.score > 0 ? "Distinct Nadi constitutions balance each other's vitality, supporting shared growth and lasting well-being." : "Shared mindfulness, gratitude practices, and balanced routines nurture harmony and vitality.");
-            }
-
-            /**
-             * =========================================================================
-             * 9. NAVIGATION, LANGUAGE & EVENT WIRING
-             * =========================================================================
-             */
-            function switchTab(tab) {
-                STATE.activeTab = tab;
-                const tabRf = document.getElementById("nav-tab-rashifal");
-                const tabMl = document.getElementById("nav-tab-milan");
-                const viewRf = document.getElementById("view-rashifal");
-                const viewMl = document.getElementById("view-milan");
-
-                const activeCls = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-amber-300 via-amber-400 to-saffron-500 text-dusk-950 shadow-md shadow-amber-500/20";
-                const idleCls = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all text-slate-300 hover:text-amber-200 hover:bg-dusk-800/60";
-
-                if (tab === "milan") {
-                    tabMl.className = activeCls;
-                    tabRf.className = idleCls;
-                    viewRf.classList.add("hidden");
-                    viewMl.classList.remove("hidden");
-                } else {
-                    tabRf.className = activeCls;
-                    tabMl.className = idleCls;
-                    viewMl.classList.add("hidden");
-                    viewRf.classList.remove("hidden");
-                }
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-
-            function applyLanguage(lang) {
-                STATE.lang = lang;
-                const btnEn = document.getElementById("lang-en-btn");
-                const btnHi = document.getElementById("lang-hi-btn");
-
-                if (lang === "en") {
-                    btnEn.className = "px-3 py-1 text-xs font-bold rounded-full transition-all bg-gradient-to-r from-amber-300 to-amber-500 text-dusk-950 shadow";
-                    btnHi.className = "px-3 py-1 text-xs font-bold rounded-full transition-all text-slate-300 hover:text-white font-hindi";
-                } else {
-                    btnHi.className = "px-3 py-1 text-xs font-bold rounded-full transition-all bg-gradient-to-r from-amber-300 to-amber-500 text-dusk-950 shadow font-hindi";
-                    btnEn.className = "px-3 py-1 text-xs font-bold rounded-full transition-all text-slate-300 hover:text-white";
-                }
-
-                document.getElementById("header-tagline").textContent = I18N[lang].tagline;
-                document.getElementById("hero-today-date").textContent = getFormattedToday();
-
-                document.querySelectorAll("[data-i18n]").forEach(el => {
-                    const key = el.getAttribute("data-i18n");
-                    if (I18N[lang][key]) el.textContent = I18N[lang][key];
-                });
-
-                renderDirectRashiGrid();
-                if (!document.getElementById("rashifal-dashboard-card").classList.contains("hidden")) {
-                    renderRashifalDashboard();
-                }
-                if (STATE.milanData) {
-                    renderMilanResults();
-                }
-            }
-
-            function openDashboardView() {
-                document.getElementById("rashifal-input-card").classList.add("hidden");
-                document.getElementById("rashifal-dashboard-card").classList.remove("hidden");
-                renderRashifalDashboard();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-
-            function openFormView() {
-                document.getElementById("rashifal-dashboard-card").classList.add("hidden");
-                document.getElementById("rashifal-input-card").classList.remove("hidden");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            }
-
-            document.addEventListener("DOMContentLoaded", () => {
-                initPWA();
-                initStarfield();
-                document.getElementById("hero-today-date").textContent = getFormattedToday();
-                renderDirectRashiGrid();
-                document.getElementById("lang-en-btn").addEventListener("click", () => {
-                    applyLanguage("en");
-                    trackEvent("language_toggled", { language: "en" });
-                });
-                document.getElementById("lang-hi-btn").addEventListener("click", () => {
-                    applyLanguage("hi");
-                    trackEvent("language_toggled", { language: "hi" });
-                });
-
-                // PWA Install Button & Modal Controls
-                const pwaModal = document.getElementById("pwa-guide-modal");
-                document.getElementById("btn-install-pwa").addEventListener("click", async () => {
-                    if (deferredInstallPrompt) {
-                        deferredInstallPrompt.prompt();
-                        try {
-                            const choice = await deferredInstallPrompt.userChoice;
-                            if (choice && choice.outcome === "accepted") {
-                                deferredInstallPrompt = null;
-                            }
-                        } catch (e) {}
-                    } else {
-                        pwaModal.classList.remove("hidden");
-                    }
-                });
-                document.getElementById("pwa-modal-close").addEventListener("click", () => pwaModal.classList.add("hidden"));
-                document.getElementById("pwa-modal-ok").addEventListener("click", () => pwaModal.classList.add("hidden"));
-                pwaModal.addEventListener("click", (e) => {
-                    if (e.target === pwaModal) pwaModal.classList.add("hidden");
-                });
-
-                document.getElementById("status-banner-close").addEventListener("click", () => {
-                    document.getElementById("status-banner").classList.add("hidden");
-                });
-
-                // Load saved profile if present
-                try {
-                    const savedRaw = localStorage.getItem("jyotish_darshan_v2");
-                    if (savedRaw) {
-                        const saved = JSON.parse(savedRaw);
-                        if (saved && saved.dob && saved.tob) {
-                            STATE.profile = saved;
-                            document.getElementById("rf-name").value = saved.name || "";
-                            document.getElementById("rf-dob").value = saved.dob;
-                            document.getElementById("rf-tob").value = saved.tob;
-                            document.getElementById("rf-city-search").value = saved.city || "New Delhi, Delhi";
-                            const cInfo = findCityInfo(saved.city);
-                            STATE.birthChart = computeVedicChart(saved.dob, saved.tob, cInfo.tz);
-                            STATE.activeRashi = STATE.birthChart.moonRashiIndex;
-                            openDashboardView();
-                    trackEvent("rashifal_calculated", {
-                        rashi_name: RASHIS[STATE.activeRashi].en,
-                        language: STATE.lang
-                    });
-                });
-
-                // Direct 12-Rashi Grid Click (Event Delegation)
-                document.getElementById("direct-rashi-grid").addEventListener("click", (e) => {
-                    const btn = e.target.closest("[data-rashi-id]");
-                    if (!btn) return;
-                    STATE.activeRashi = parseInt(btn.getAttribute("data-rashi-id"), 10);
-                    openDashboardView();
-                    trackEvent("rashi_switched", {
-                        rashi_name: RASHIS[STATE.activeRashi].en,
-                        language: STATE.lang
-                    });
-                });
-
-                // Dashboard Horizontal Rashi Strip Click
-                document.getElementById("dash-rashi-strip").addEventListener("click", (e) => {
-                    const btn = e.target.closest("[data-strip-rashi]");
-                    if (!btn) return;
-                    STATE.activeRashi = parseInt(btn.getAttribute("data-strip-rashi"), 10);
-                    renderRashifalDashboard();
-                    trackEvent("rashi_switched", {
-                        rashi_name: RASHIS[STATE.activeRashi].en,
-                        language: STATE.lang
-                    });
-                });
-
-                // Direct 12-Rashi Grid Click (Event Delegation)
-                document.getElementById("direct-rashi-grid").addEventListener("click", (e) => {
-                    const btn = e.target.closest("[data-rashi-id]");
-                    if (!btn) return;
-                    STATE.activeRashi = parseInt(btn.getAttribute("data-rashi-id"), 10);
-                    openDashboardView();
-                });
-
-                // Dashboard Horizontal Rashi Strip Click
-                document.getElementById("dash-rashi-strip").addEventListener("click", (e) => {
-                    const btn = e.target.closest("[data-strip-rashi]");
-                    if (!btn) return;
-                    STATE.activeRashi = parseInt(btn.getAttribute("data-strip-rashi"), 10);
-                    renderRashifalDashboard();
-                });
-
-                document.getElementById("btn-back-birth-rashi").addEventListener("click", () => {
-                    if (STATE.birthChart) {
-                        STATE.activeRashi = STATE.birthChart.moonRashiIndex;
-                        renderRashifalDashboard();
-                    }
-                });
-
-                document.getElementById("btn-edit-birth-details").addEventListener("click", openFormView);
-                document.getElementById("btn-footer-edit").addEventListener("click", openFormView);
-
-                document.getElementById("btn-clear-profile").addEventListener("click", () => {
-                    try { localStorage.removeItem("jyotish_darshan_v2"); } catch (e) {}
-                    STATE.profile = null;
-                    STATE.birthChart = null;
-                    openFormView();
-                    showBanner(STATE.lang === "hi" ? "सहेजा गया विवरण हटा दिया गया है।" : "Saved birth profile cleared.");
-                });
-
-                document.getElementById("btn-share-rashifal").addEventListener("click", () => {
-                    const r = RASHIS[STATE.activeRashi];
-                    const d = getDailyPredictionsForRashi(r.id);
-                    const dateStr = getFormattedToday();
-                    const text = STATE.lang === "hi"
-                        ? `✨ दैनिक राशिफल (${dateStr}) ✨\nराशि: ${r.hi} (${r.en})\n\n☉ आज का सार: ${d.overview}\n❖ करियर व धन: ${d.career}\n♥ प्रेम व संबंध: ${d.love}\n🎨 शुभ रंग: ${d.colorName} | ✦ शुभ अंक: ${d.numbers}\nॐ मंत्र: ${r.mantra}`
-                        : `✨ Daily Vedic Rashifal (${dateStr}) ✨\nRashi: ${r.en} (${r.western})\n\n☉ Overview: ${d.overview}\n❖ Career: ${d.career}\n♥ Love: ${d.love}\n🎨 Lucky Color: ${d.colorName} | ✦ Lucky Number: ${d.numbers}\nॐ Mantra: ${r.mantra}`;
-                    copyTextSafely(text, STATE.lang === "hi" ? "दैनिक राशिफल कॉपी हो गया!" : "Daily Rashifal copied to clipboard!");
-                    trackEvent("result_shared", {
-                        share_type: "daily_rashifal",
-                        rashi_name: r.en,
-                        language: STATE.lang
-                    });
-                });
-
-                // Kundli Milan Helpers
-                document.getElementById("btn-copy-my-to-p1").addEventListener("click", () => {
-                    const name = document.getElementById("rf-name").value.trim() || STATE.profile?.name || "";
-                    const dob = document.getElementById("rf-dob").value || STATE.profile?.dob || "1996-08-15";
-                    const tob = document.getElementById("rf-tob").value || STATE.profile?.tob || "09:30";
-                    const city = document.getElementById("rf-city-search").value.trim() || STATE.profile?.city || "New Delhi, Delhi";
-                    document.getElementById("m1-name").value = name;
-                    document.getElementById("m1-dob").value = dob;
-                    document.getElementById("m1-tob").value = tob;
-                    document.getElementById("m1-city").value = city;
-                    showBanner(STATE.lang === "hi" ? "आपका विवरण व्यक्ति 1 में भर दिया गया है।" : "Your details filled into Person 1.");
-                });
-
-                document.getElementById("btn-sample-couple").addEventListener("click", () => {
-                    document.getElementById("m1-name").value = "Aarav";
-                    document.getElementById("m1-dob").value = "1995-05-14";
-                    document.getElementById("m1-tob").value = "08:20";
-                    document.getElementById("m1-city").value = "Raipur, Chhattisgarh";
-
-                    document.getElementById("m2-name").value = "Diya";
-                    document.getElementById("m2-dob").value = "1997-02-21";
-                    document.getElementById("m2-tob").value = "18:45";
-                    document.getElementById("m2-city").value = "Varanasi, Uttar Pradesh";
-
-                    document.getElementById("milan-match-form").dispatchEvent(new Event("submit"));
-                });
-
-                document.getElementById("btn-swap-couple").addEventListener("click", () => {
-                    const fields = ["name", "dob", "tob", "city"];
-                    fields.forEach(f => {
-                        const a = document.getElementById(`m1-${f}`);
-                        const b = document.getElementById(`m2-${f}`);
-                        const tmp = a.value;
-                        a.value = b.value;
-                        b.value = tmp;
-                    });
-                    if (STATE.milanData) {
-                        document.getElementById("milan-match-form").dispatchEvent(new Event("submit"));
-                    }
-                });
-
-                // Kundli Milan Form Submit
-                document.getElementById("milan-match-form").addEventListener("submit", (e) => {
-                    e.preventDefault();
-                    const errEl = document.getElementById("milan-form-error");
-                    errEl.classList.add("hidden");
-
-                    const p1Name = document.getElementById("m1-name").value.trim();
-                    const p1Dob = document.getElementById("m1-dob").value;
-                    const p1Tob = document.getElementById("m1-tob").value || "12:00";
-                    const p1CityRaw = document.getElementById("m1-city").value.trim() || "New Delhi, Delhi";
-
-                    const p2Name = document.getElementById("m2-name").value.trim();
-                    const p2Dob = document.getElementById("m2-dob").value;
-                    const p2Tob = document.getElementById("m2-tob").value || "12:00";
-                    const p2CityRaw = document.getElementById("m2-city").value.trim() || "Mumbai, Maharashtra";
-
-                    if (!p1Dob || !p2Dob) {
-                        errEl.textContent = STATE.lang === "hi"
-                            ? "कृपया दोनों व्यक्तियों की जन्म तिथि (Date of Birth) चुनें।"
-                            : "Please enter Date of Birth for both Person 1 and Person 2.";
-                        errEl.classList.remove("hidden");
-                        return;
-                    }
-
-                    const c1Info = findCityInfo(p1CityRaw);
-                    const c2Info = findCityInfo(p2CityRaw);
-                    const chart1 = computeVedicChart(p1Dob, p1Tob, c1Info.tz);
-                    const chart2 = computeVedicChart(p2Dob, p2Tob, c2Info.tz);
-                    const match = calculateAshtakoot(chart1, chart2);
-
-                    STATE.milanData = {
-                        p1: { name: p1Name, dob: p1Dob, tob: p1Tob, city: c1Info.name, chart: chart1 },
-                        p2: { name: p2Name, dob: p2Dob, tob: p2Tob, city: c2Info.name, chart: chart2 },
-                        match
-                    };
-
-                    const resArea = document.getElementById("milan-results-area");
-                    resArea.classList.remove("hidden");
-                    renderMilanResults();
-                    resArea.scrollIntoView({ behavior: "smooth", block: "start" });
-                    trackEvent("kundli_milan_checked", {
-                        total_guna: match.total,
-                        language: STATE.lang
-                    });
-                });
-
-                document.getElementById("btn-share-milan").addEventListener("click", () => {
-                    if (!STATE.milanData) return;
-                    const { p1, p2, match } = STATE.milanData;
-                    const r1 = RASHIS[p1.chart.moonRashiIndex];
-                    const r2 = RASHIS[p2.chart.moonRashiIndex];
-                    const n1 = p1.name || (STATE.lang === "hi" ? "व्यक्ति 1" : "Person 1");
-                    const n2 = p2.name || (STATE.lang === "hi" ? "व्यक्ति 2" : "Person 2");
-                    const summary = document.getElementById("milan-summary-text").textContent;
-
-                    const text = STATE.lang === "hi"
-                        ? `💞 कुंडली मिलान रिपोर्ट 💞\n${n1} (${r1.hi}) × ${n2} (${r2.hi})\nगुण मिलान: ${match.totalText} / 36 (${match.pct}%)\n${summary}`
-                        : `💞 Kundli Milan Report 💞\n${n1} (${r1.en}) × ${n2} (${r2.en})\nAshtakoot Score: ${match.totalText} / 36 Gunas (${match.pct}%)\n${summary}`;
-                    copyTextSafely(text, STATE.lang === "hi" ? "कुंडली मिलान रिपोर्ट कॉपी हो गई!" : "Match report copied to clipboard!");
-                    trackEvent("result_shared", {
-                        share_type: "kundli_milan",
-                        total_guna: match.total,
-                        language: STATE.lang
-                    });
-                });
-            });
-        })();
-    </script>
+    <!-- RASHIFAL PANEL -->
+    <section id="panelRashifal" class="panel active">
+      <span id="todayDateBadge" class="date-badge"></span>
+
+      <div class="field">
+        <label id="lblSelectRashi" for="rashiSelect">Select Your Rashi (Zodiac Sign)</label>
+        <select id="rashiSelect"></select>
+      </div>
+
+      <div id="rashiGrid" class="rashi-grid"></div>
+
+      <div class="actions-row">
+        <button type="button" id="calcRashifalBtn" class="btn-primary">Get Daily Rashifal</button>
+      </div>
+
+      <div id="rashifalResult" class="result-box"></div>
+    </section>
+
+    <!-- KUNDLI MILAN PANEL -->
+    <section id="panelKundli" class="panel">
+      <h2 id="kundliHeading" style="font-size: 1.1rem; margin-bottom: 10px; color: var(--accent-2);">36-Guna Kundli Milan</h2>
+
+      <div class="grid-2">
+        <div class="field">
+          <label id="lblPartner1Name" for="partner1Name">First Person Name</label>
+          <input type="text" id="partner1Name" placeholder="e.g. Aarav" />
+        </div>
+        <div class="field">
+          <label id="lblPartner1Rashi" for="partner1Rashi">First Person Rashi</label>
+          <select id="partner1Rashi"></select>
+        </div>
+        <div class="field">
+          <label id="lblPartner2Name" for="partner2Name">Second Person Name</label>
+          <input type="text" id="partner2Name" placeholder="e.g. Ananya" />
+        </div>
+        <div class="field">
+          <label id="lblPartner2Rashi" for="partner2Rashi">Second Person Rashi</label>
+          <select id="partner2Rashi"></select>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" id="calcKundliBtn" class="btn-primary">Check Kundli Milan</button>
+      </div>
+
+      <div id="kundliResult" class="result-box"></div>
+    </section>
+
+    <p id="footerNote" class="status-note">Local device date &amp; browser storage active. Analytics enabled.</p>
+  </div>
+
+  <script>
+    (function () {
+      const RASHIS = [
+        { key: 'aries', en: 'Mesh (Aries)', hi: 'मेष' },
+        { key: 'taurus', en: 'Vrishabh (Taurus)', hi: 'वृषभ' },
+        { key: 'gemini', en: 'Mithun (Gemini)', hi: 'मिथुन' },
+        { key: 'cancer', en: 'Kark (Cancer)', hi: 'कर्क' },
+        { key: 'leo', en: 'Singh (Leo)', hi: 'सिंह' },
+        { key: 'virgo', en: 'Kanya (Virgo)', hi: 'कन्या' },
+        { key: 'libra', en: 'Tula (Libra)', hi: 'तुला' },
+        { key: 'scorpio', en: 'Vrishchik (Scorpio)', hi: 'वृश्चिक' },
+        { key: 'sagittarius', en: 'Dhanu (Sagittarius)', hi: 'धनु' },
+        { key: 'capricorn', en: 'Makar (Capricorn)', hi: 'मकर' },
+        { key: 'aquarius', en: 'Kumbh (Aquarius)', hi: 'कुंभ' },
+        { key: 'pisces', en: 'Meen (Pisces)', hi: 'मीन' }
+      ];
+
+      const MESSAGES_EN = [
+        'Steady progress in work and clear communication brings positive outcomes today.',
+        'Focus on priorities, keep calm in discussions, and avoid rushed decisions.',
+        'Good day for planning, family harmony, and completing pending tasks.',
+        'Helpful support arrives when needed; stay practical with expenses and commitments.'
+      ];
+
+      const MESSAGES_HI = [
+        'कार्यक्षेत्र में स्थिर प्रगति और स्पष्ट बातचीत से आज सकारात्मक परिणाम मिलेंगे।',
+        'प्राथमिकताओं पर ध्यान दें, चर्चा में शांत रहें और जल्दबाजी में निर्णय न लें।',
+        'योजना बनाने, पारिवारिक तालमेल और रुके हुए काम पूरे करने के लिए अच्छा दिन है।',
+        'ज़रूरत के समय सहयोग मिलेगा; खर्च और वादों को लेकर व्यावहारिक रहें।'
+      ];
+
+      let currentLang = localStorage.getItem('jd_lang') || 'en';
+      let selectedRashiIndex = Number(localStorage.getItem('jd_rashi_idx') || 0);
+      if (Number.isNaN(selectedRashiIndex) || selectedRashiIndex < 0 || selectedRashiIndex >= RASHIS.length) {
+        selectedRashiIndex = 0;
+      }
+
+      function getLocalDateKey() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+
+      function getFormattedToday() {
+        const now = new Date();
+        const locale = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+        return now.toLocaleDateString(locale, {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+
+      function getRashiLabel(index) {
+        const item = RASHIS[index] || RASHIS[0];
+        return currentLang === 'hi' ? `${item.hi} (${item.en.split(' ')[0]})` : item.en;
+      }
+
+      function populateSelects() {
+        const rashiSelect = document.getElementById('rashiSelect');
+        const p1Select = document.getElementById('partner1Rashi');
+        const p2Select = document.getElementById('partner2Rashi');
+
+        const prevP1 = p1Select.value || '0';
+        const prevP2 = p2Select.value || '6';
+
+        [rashiSelect, p1Select, p2Select].forEach((sel) => {
+          sel.innerHTML = '';
+          RASHIS.forEach((r, idx) => {
+            const opt = document.createElement('option');
+            opt.value = String(idx);
+            opt.textContent = getRashiLabel(idx);
+            sel.appendChild(opt);
+          });
+        });
+
+        rashiSelect.value = String(selectedRashiIndex);
+        p1Select.value = prevP1;
+        p2Select.value = prevP2;
+      }
+
+      function renderRashiGrid() {
+        const grid = document.getElementById('rashiGrid');
+        grid.innerHTML = '';
+        RASHIS.forEach((r, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'rashi-btn' + (idx === selectedRashiIndex ? ' selected' : '');
+          btn.textContent = currentLang === 'hi' ? r.hi : r.en.split(' ')[0];
+          btn.addEventListener('click', () => {
+            selectedRashiIndex = idx;
+            localStorage.setItem('jd_rashi_idx', String(idx));
+            document.getElementById('rashiSelect').value = String(idx);
+            renderRashiGrid();
+            renderRashifal();
+            trackEvent('rashi_switched', { rashi: r.key, lang: currentLang });
+          });
+          grid.appendChild(btn);
+        });
+      }
+
+      function renderRashifal() {
+        const dateStr = getFormattedToday();
+        const dateKey = getLocalDateKey();
+        document.getElementById('todayDateBadge').textContent =
+          (currentLang === 'hi' ? 'आज की तारीख: ' : 'Today: ') + dateStr;
+
+        const seed = dateKey.split('-').reduce((acc, n) => acc + Number(n), 0) + selectedRashiIndex * 7;
+        const msg = currentLang === 'hi'
+          ? MESSAGES_HI[seed % MESSAGES_HI.length]
+          : MESSAGES_EN[seed % MESSAGES_EN.length];
+
+        const luckyNum = ((seed * 3) % 9) + 1;
+        const rashiName = getRashiLabel(selectedRashiIndex);
+
+        const box = document.getElementById('rashifalResult');
+        if (currentLang === 'hi') {
+          box.innerHTML = `
+            <h3>${rashiName} — दैनिक राशिफल</h3>
+            <p style="margin-top: 8px;">${msg}</p>
+            <p class="status-note"><strong>शुभ अंक:</strong> ${luckyNum} | <strong>दिनांक:</strong> ${dateStr}</p>
+          `;
+        } else {
+          box.innerHTML = `
+            <h3>${rashiName} — Daily Rashifal</h3>
+            <p style="margin-top: 8px;">${msg}</p>
+            <p class="status-note"><strong>Lucky Number:</strong> ${luckyNum} | <strong>Date:</strong> ${dateStr}</p>
+          `;
+        }
+      }
+
+      function renderKundliMilan() {
+        const p1Name = document.getElementById('partner1Name').value.trim() || (currentLang === 'hi' ? 'पहला व्यक्ति' : 'Person 1');
+        const p2Name = document.getElementById('partner2Name').value.trim() || (currentLang === 'hi' ? 'दूसरा व्यक्ति' : 'Person 2');
+        const idx1 = Number(document.getElementById('partner1Rashi').value || 0);
+        const idx2 = Number(document.getElementById('partner2Rashi').value || 0);
+
+        const diff = Math.abs(idx1 - idx2);
+        const rawScore = 18 + ((diff * 5 + idx1 + idx2) % 18);
+        const gunaScore = Math.min(36, Math.max(18, rawScore));
+
+        const r1 = getRashiLabel(idx1);
+        const r2 = getRashiLabel(idx2);
+        const box = document.getElementById('kundliResult');
+
+        if (currentLang === 'hi') {
+          const verdict = gunaScore >= 25 ? 'उत्तम तालमेल' : gunaScore >= 20 ? 'संतुलित तालमेल' : 'संवाद और समझ आवश्यक';
+          box.innerHTML = `
+            <div><strong>${p1Name}</strong> (${r1}) × <strong>${p2Name}</strong> (${r2})</div>
+            <div class="score-big">${gunaScore} / 36 गुण</div>
+            <p>${verdict}</p>
+          `;
+        } else {
+          const verdict = gunaScore >= 25 ? 'Strong Compatibility' : gunaScore >= 20 ? 'Balanced Match' : 'Mutual Understanding Recommended';
+          box.innerHTML = `
+            <div><strong>${p1Name}</strong> (${r1}) × <strong>${p2Name}</strong> (${r2})</div>
+            <div class="score-big">${gunaScore} / 36 Gunas</div>
+            <p>${verdict}</p>
+          `;
+        }
+      }
+
+      function applyLanguageUI() {
+        const isHi = currentLang === 'hi';
+        document.documentElement.lang = isHi ? 'hi' : 'en';
+        document.getElementById('appTitle').textContent = isHi ? 'ज्योतिष दर्शन' : 'Jyotish Darshan';
+        document.getElementById('appSubtitle').textContent = isHi
+          ? 'दैनिक राशिफल और 36-गुण कुंडली मिलान'
+          : 'Daily Rashifal & 36-Guna Kundli Milan';
+        document.getElementById('langToggleBtn').textContent = isHi ? 'English' : 'हिन्दी';
+        document.getElementById('tabRashifal').textContent = isHi ? 'दैनिक राशिफल' : 'Daily Rashifal';
+        document.getElementById('tabKundli').textContent = isHi ? 'कुंडली मिलान' : 'Kundli Milan';
+        document.getElementById('lblSelectRashi').textContent = isHi ? 'अपनी राशि चुनें' : 'Select Your Rashi (Zodiac Sign)';
+        document.getElementById('calcRashifalBtn').textContent = isHi ? 'दैनिक राशिफल देखें' : 'Get Daily Rashifal';
+        document.getElementById('kundliHeading').textContent = isHi ? '36-गुण कुंडली मिलान' : '36-Guna Kundli Milan';
+        document.getElementById('lblPartner1Name').textContent = isHi ? 'पहले व्यक्ति का नाम' : 'First Person Name';
+        document.getElementById('lblPartner1Rashi').textContent = isHi ? 'पहले व्यक्ति की राशि' : 'First Person Rashi';
+        document.getElementById('lblPartner2Name').textContent = isHi ? 'दूसरे व्यक्ति का नाम' : 'Second Person Name';
+        document.getElementById('lblPartner2Rashi').textContent = isHi ? 'दूसरे व्यक्ति की राशि' : 'Second Person Rashi';
+        document.getElementById('calcKundliBtn').textContent = isHi ? 'कुंडली मिलान देखें' : 'Check Kundli Milan';
+        document.getElementById('footerNote').textContent = isHi
+          ? 'डिवाइस की वर्तमान तारीख और ब्राउज़र स्टोरेज सक्रिय है।'
+          : 'Local device date & browser storage active. Analytics enabled.';
+
+        populateSelects();
+        renderRashiGrid();
+        renderRashifal();
+        renderKundliMilan();
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const tabRashifal = document.getElementById('tabRashifal');
+        const tabKundli = document.getElementById('tabKundli');
+        const panelRashifal = document.getElementById('panelRashifal');
+        const panelKundli = document.getElementById('panelKundli');
+
+        tabRashifal.addEventListener('click', () => {
+          tabRashifal.classList.add('active');
+          tabKundli.classList.remove('active');
+          panelRashifal.classList.add('active');
+          panelKundli.classList.remove('active');
+        });
+
+        tabKundli.addEventListener('click', () => {
+          tabKundli.classList.add('active');
+          tabRashifal.classList.remove('active');
+          panelKundli.classList.add('active');
+          panelRashifal.classList.remove('active');
+        });
+
+        document.getElementById('langToggleBtn').addEventListener('click', () => {
+          currentLang = currentLang === 'en' ? 'hi' : 'en';
+          localStorage.setItem('jd_lang', currentLang);
+          applyLanguageUI();
+          trackEvent('language_toggled', { lang: currentLang });
+        });
+
+        document.getElementById('rashiSelect').addEventListener('change', (e) => {
+          selectedRashiIndex = Number(e.target.value || 0);
+          localStorage.setItem('jd_rashi_idx', String(selectedRashiIndex));
+          renderRashiGrid();
+          renderRashifal();
+          trackEvent('rashi_switched', { rashi: RASHIS[selectedRashiIndex]?.key, lang: currentLang });
+        });
+
+        document.getElementById('calcRashifalBtn').addEventListener('click', () => {
+          renderRashifal();
+          trackEvent('rashifal_calculated', { rashi: RASHIS[selectedRashiIndex]?.key, lang: currentLang });
+        });
+
+        document.getElementById('calcKundliBtn').addEventListener('click', () => {
+          renderKundliMilan();
+          trackEvent('kundli_milan_checked', { lang: currentLang });
+        });
+
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('installAppBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          installBtn.style.display = 'inline-block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          installBtn.style.display = 'none';
+          trackEvent('pwa_installed', { lang: currentLang });
+        });
+
+        applyLanguageUI();
+      });
+    })();
+  </script>
 </body>
 </html>
